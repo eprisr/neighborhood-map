@@ -2,7 +2,7 @@ import React from 'react';
 import {GoogleApiWrapper} from 'google-maps-react'; //NPMJS: https://www.npmjs.com/package/google-maps-react
 import GoogleMap from '../Map'
 import MapError from '../MapError';
-
+import config from '../config.json';
 export class MapContainer extends React.Component {
 	render() {
 		//https://www.fullstackreact.com/articles/how-to-write-a-google-maps-react-component/#the-map-container-component
@@ -31,6 +31,6 @@ export class MapContainer extends React.Component {
 
 export default GoogleApiWrapper({
 	//Loads API asynchronously into the DOM
-  apiKey: 'AIzaSyAh1wavYKLXqY8RDoD3bgDfm6JzKNdYQ-8',
+  apiKey: config.apiKey,
 	LoadingContainer: MapError
 })(MapContainer)
