@@ -9,7 +9,6 @@ import escapeRegExp from 'escape-string-regexp';
 const client_id = 'CRWQUQAJO1D0PM5IPSXI4TVTM3X2KHLZCJ4K5AD3E0INWJUS';
 const client_secret = 'FRFNPXEMRBYDAESQGEJF3YUUVZALZHZT1QHCIBCKFXAAFPZW';
 const v = '20180323';
-
 class App extends React.Component {
   state = {
     locations: null,
