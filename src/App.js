@@ -6,9 +6,9 @@ import './App.css';
 import swal from 'sweetalert';
 import escapeRegExp from 'escape-string-regexp';
 
-const client_id = process.env.FOURSQUARE_CLIENT_ID;
-const client_secret = process.env.FOURSQUARE_CLIENT_SECRET;
-const v = '20180323';
+// const client_id = process.env.FOURSQUARE_CLIENT_ID;
+// const client_secret = process.env.FOURSQUARE_CLIENT_SECRET;
+// const v = '20180323';
 const options = {
 	method: 'GET',
 	headers: {
@@ -23,8 +23,6 @@ class App extends React.Component {
     results: [],
     result: {},
     userInput: {near: ''},
-		lat: '41.85003',
-		long: '-87.65005',
     center: {lat: 41.85003, lng: -87.65005},
     dataComplete: false
   }
@@ -38,7 +36,7 @@ class App extends React.Component {
   getData(near) {
     this.setState({ dataComplete: false })
   //Fetch locations from FourSquare Search API
-    fetch(`https://api.foursquare.com/v3/places/nearby?ll=${this.state.lat}%2C${this.state.long}&query=smoothie&limit=50`, options)
+    fetch(`https://api.foursquare.com/v3/places/search?query=smoothie&near=${near}&sort=DISTANCE&limit=50`, options)
       .then((response) => {
         //If response is an error due to query...
         if(!response.ok) {
@@ -50,7 +48,6 @@ class App extends React.Component {
       })
       //Update locations array from data
       .then((response) => this.setState({ locations: response.results }, () => {
-				console.log(response.results);
         if(this.state.results.length === 0) {
           this.setState({ results: this.state.locations })
         }
@@ -58,7 +55,7 @@ class App extends React.Component {
         this.updateMap()
       } ))
       .catch((error) =>
-        swal("WARNING!", "Unable to Retrieve Data.", "warning")
+        swal("ERROR!", "Unable to Retrieve Data.", "error")
       );
   }
 
@@ -97,8 +94,8 @@ class App extends React.Component {
 
   updateCenter() {
     if(this.state.locations[0] !== undefined || this.state.locations !== null) {
-      let lat = this.state.locations[0].location.lat
-      let lng = this.state.locations[0].location.lng
+      let lat = this.state.locations[0].geocodes.main.latitude
+      let lng = this.state.locations[0].geocodes.main.longitude
       this.setState({ center: {lat: lat, lng: lng} })
     } else {
       return;
