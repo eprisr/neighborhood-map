@@ -1,34 +1,44 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import GoogleApiWrapper from './utils/GoogleApiWrapper'
 import Sidebar from './Sidebar';
 import './App.css';
 import swal from 'sweetalert';
 import escapeRegExp from 'escape-string-regexp';
 
-const client_id = 'CRWQUQAJO1D0PM5IPSXI4TVTM3X2KHLZCJ4K5AD3E0INWJUS';
-const client_secret = 'FRFNPXEMRBYDAESQGEJF3YUUVZALZHZT1QHCIBCKFXAAFPZW';
+const client_id = process.env.FOURSQUARE_CLIENT_ID;
+const client_secret = process.env.FOURSQUARE_CLIENT_SECRET;
 const v = '20180323';
+const options = {
+	method: 'GET',
+	headers: {
+		Accept: 'application/json',
+		Authorization: 'fsq3am5tPijW0ZnoyobGDYpCqGdbLbLPwdZ27H2dSxKPlq8='
+	}
+};
 class App extends React.Component {
-  state = {
-    locations: null,
+	
+	state = {
+		locations: null,
     results: [],
     result: {},
     userInput: {near: ''},
+		lat: '41.85003',
+		long: '-87.65005',
     center: {lat: 41.85003, lng: -87.65005},
     dataComplete: false
   }
-
+	
   //Fetch data when componenet mounts
   componentDidMount() {
-    this.getData('Chicago, IL')
+		this.getData('Chicago, IL')
   }
 
   //Fetch data function
   getData(near) {
     this.setState({ dataComplete: false })
   //Fetch locations from FourSquare Search API
-    fetch(`https://api.foursquare.com/v2/venues/search?client_id=${client_id}&client_secret=${client_secret}&v=${v}&limit=20&near=${near}&query=smoothie`)
+    fetch(`https://api.foursquare.com/v3/places/nearby?ll=${this.state.lat}%2C${this.state.long}&query=smoothie&limit=50`, options)
       .then((response) => {
         //If response is an error due to query...
         if(!response.ok) {
@@ -39,7 +49,8 @@ class App extends React.Component {
         return response.json()
       })
       //Update locations array from data
-      .then((data) => this.setState({ locations: data.response.venues }, () => {
+      .then((response) => this.setState({ locations: response.results }, () => {
+				console.log(response.results);
         if(this.state.results.length === 0) {
           this.setState({ results: this.state.locations })
         }
@@ -112,14 +123,16 @@ class App extends React.Component {
           resultClicked={this.getResult}
         />
         { retrievedData === true &&
-          <Route exact path='/' render={() => (
-            <GoogleApiWrapper
-              userInput={this.state.userInput}
-              results={this.state.results}
-              center={this.state.center}
-              result={this.state.result}
-            />
-          )} />
+					<Routes>
+						<Route exact path='/' render={() => (
+							<GoogleApiWrapper
+								userInput={this.state.userInput}
+								results={this.state.results}
+								center={this.state.center}
+								result={this.state.result}
+							/>
+						)} />
+					</Routes>
         }
       </div>
     );

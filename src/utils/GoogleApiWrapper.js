@@ -2,7 +2,7 @@ import React from 'react';
 import {GoogleApiWrapper} from 'google-maps-react'; //NPMJS: https://www.npmjs.com/package/google-maps-react
 import GoogleMap from '../Map'
 import MapError from '../MapError';
-require('dotenv').config()
+// require('dotenv').config()
 export class MapContainer extends React.Component {
 	render() {
 		//https://www.fullstackreact.com/articles/how-to-write-a-google-maps-react-component/#the-map-container-component
