@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 let map;
-
 class GoogleMap extends React.Component {
 	state = {
 		markers: [],
