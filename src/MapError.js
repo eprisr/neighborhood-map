@@ -1,5 +1,5 @@
 import React from 'react';
-import swal from '@sweetalert/with-react';
+import Swal from 'sweetalert2';
 
 class MapError extends React.Component {
 	state = {
@@ -20,11 +20,17 @@ class MapError extends React.Component {
 	}
 
 	showAlert = () => {
-		swal('This is Taking Awhile...');
+		Swal({
+			text: 'This is Taking Awhile...'
+		});
 	}
 
 	showError = () => {
-		swal('Error!', 'Connection Timed Out. Try Again.', 'error');
+		Swal({
+			title: 'Error!',
+			text: 'Connection Timed Out. Try Again.',
+			icon: 'error'
+		});
 	}
 
 	render = () => {

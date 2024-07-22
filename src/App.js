@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import GoogleApiWrapper from './utils/GoogleApiWrapper'
 import Sidebar from './Sidebar';
 import './App.css';
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 import escapeRegExp from 'escape-string-regexp';
 
 // const client_id = process.env.FOURSQUARE_CLIENT_ID;
@@ -55,7 +55,11 @@ class App extends React.Component {
         this.updateMap()
       } ))
       .catch((error) =>
-        swal("ERROR!", "Unable to Retrieve Data.", "error")
+				Swal.fire({
+					icon: "error",
+					title: "ERROR!",
+					text: "Unable to Retrieve Data.",
+				})
       );
   }
 
