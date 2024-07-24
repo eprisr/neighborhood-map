@@ -1,5 +1,4 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import Sidebar from './Sidebar';
 import './App.css';
@@ -136,16 +135,12 @@ class App extends React.Component {
           />
         </APIProvider>
         {/* { retrievedData === true &&
-					<Routes>
-						<Route exact path='/' render={() => (
-							<GoogleApiWrapper
-								userInput={this.state.userInput}
-								results={this.state.results}
-								center={this.state.center}
-								result={this.state.result}
-							/>
-						)} />
-					</Routes>
+					<GoogleApiWrapper
+						userInput={this.state.userInput}
+						results={this.state.results}
+						center={this.state.center}
+						result={this.state.result}
+					/>
         } */}
       </div>
     )
