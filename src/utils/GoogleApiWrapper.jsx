@@ -1,5 +1,5 @@
 import React from 'react';
-import {GoogleApiWrapper} from 'google-maps-react'; //NPMJS: https://www.npmjs.com/package/google-maps-react
+// import {GoogleApiWrapper} from 'google-maps-react'; //NPMJS: https://www.npmjs.com/package/google-maps-react
 import GoogleMap from '../Map';
 import MapError from '../MapError';
 // require('dotenv').config()
@@ -13,10 +13,7 @@ export class MapContainer extends React.Component {
 		// }
 
 		return (
-			//NPMJS
 			<div>
-				{/* For Lazy-loading GoogleAPI  */}
-				{/* <Map google={this.props.google} /> */}
 				<GoogleMap
 					google={window.google}
 					userInput={this.props.userInput}
@@ -29,8 +26,8 @@ export class MapContainer extends React.Component {
 	}
 }
 
-export default GoogleApiWrapper({
-	//Loads API asynchronously into the DOM
-  apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-	LoadingContainer: MapError
-})(MapContainer)
+// export default GoogleApiWrapper({
+// 	//Loads API asynchronously into the DOM
+//   apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+// 	LoadingContainer: MapError
+// })(MapContainer)

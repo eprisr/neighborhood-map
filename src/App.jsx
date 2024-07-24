@@ -1,21 +1,25 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import GoogleApiWrapper from './utils/GoogleApiWrapper'
+import { APIProvider } from '@vis.gl/react-google-maps';
 import Sidebar from './Sidebar';
 import './App.css';
 import Swal from 'sweetalert2';
 import escapeRegExp from 'escape-string-regexp';
+import GoogleMap from './Map';
 
-// const client_id = process.env.FOURSQUARE_CLIENT_ID;
-// const client_secret = process.env.FOURSQUARE_CLIENT_SECRET;
+const MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const FOURSQUARE_API_KEY = import.meta.env.VITE_FOURSQUARE_API_KEY;
+
+// const client_id = import.meta.env.FOURSQUARE_CLIENT_ID;
+// const client_secret = import.meta.env.FOURSQUARE_CLIENT_SECRET;
 // const v = '20180323';
 const options = {
-	method: 'GET',
-	headers: {
-		Accept: 'application/json',
-		Authorization: 'fsq3am5tPijW0ZnoyobGDYpCqGdbLbLPwdZ27H2dSxKPlq8='
-	}
-};
+  method: 'GET',
+  headers: {
+    Accept: 'application/json',
+    Authorization: `${FOURSQUARE_API_KEY}`,
+  },
+}
 class App extends React.Component {
 	
 	state = {
@@ -123,7 +127,15 @@ class App extends React.Component {
           results={this.state.results}
           resultClicked={this.getResult}
         />
-        { retrievedData === true &&
+        <APIProvider apiKey={MAPS_API_KEY}>
+          <GoogleMap
+            userInput={this.state.userInput}
+            results={this.state.results}
+            center={this.state.center}
+            result={this.state.result}
+          />
+        </APIProvider>
+        {/* { retrievedData === true &&
 					<Routes>
 						<Route exact path='/' render={() => (
 							<GoogleApiWrapper
@@ -134,9 +146,9 @@ class App extends React.Component {
 							/>
 						)} />
 					</Routes>
-        }
+        } */}
       </div>
-    );
+    )
   }
 }
 
