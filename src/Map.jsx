@@ -140,7 +140,7 @@ class GoogleMap extends React.Component {
       <div>
         <div
           //To be referenced in initMap()
-          ref="map"
+          // ref="map"
           style={style}>
           Loading map...
 					<Map
