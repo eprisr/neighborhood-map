@@ -1,27 +1,24 @@
 import React from 'react';
 import { List, ListItem } from '@mui/material';
 
-class Suggestions extends React.Component {
-	render() {
+function Suggestions({ results, resultsClicked }) {
+	//Map over results array
+	//Return list item
+	const options = results.map(r => (
+	<ListItem
+		key={r.id}
+		button={true}
+		onClick={() => resultClicked(r)}
+	>
+		{r.name}
+	</ListItem>
+	))
 
-		//Map over results array
-		//Return list item
-		const options = this.props.results.map(r => (
-		<ListItem
-			key={r.id}
-			button={true}
-			onClick={() => this.props.resultClicked(r)}
-		>
-			{r.name}
-		</ListItem>
-		))
-
-		return (
-			<List>
-				{options}
-			</List>
-		)
-	}
+	return (
+		<List>
+			{options}
+		</List>
+	)
 }
 
 export default Suggestions;
