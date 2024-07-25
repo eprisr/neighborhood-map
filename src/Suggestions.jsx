@@ -1,6 +1,5 @@
 import React from 'react';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import { List, ListItem } from '@mui/material';
 
 class Suggestions extends React.Component {
 	render() {

@@ -3,8 +3,7 @@ import Suggestions from './Suggestions';
 import PropTypes from 'prop-types';
 // import Input from '@material-ui/core/Input';
 // import classNames from 'classnames';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
+import { MenuItem, TextField } from '@mui/material';
 
 const cities = [
 	{
