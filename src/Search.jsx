@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Suggestions from './Suggestions';
 import PropTypes from 'prop-types';
 // import Input from '@material-ui/core/Input';
@@ -23,12 +23,9 @@ const cities = [
 		label: 'New York, NY',
 	}
 ]
-
-class Search extends React.Component {
-	state = {
-		query: '',
-		city: 'Chicago, IL'
-	}
+function Search() {
+	const [query, setQuery] = useState('');
+	const [city, setCity] = useState('Chicago, IL');
 
 	//Handle input (MaterialUI)
 	// handleChange = name => event => {
@@ -38,68 +35,64 @@ class Search extends React.Component {
 	// };
 
   //Update query to input value
-	updateQuery = () => {
-		this.setState({
-			query: this.search.value
-		}, () => {
-			if(this.state.query && this.state.query.length > 0) {
-				//Give query to App.js
-				this.props.getQuery(this.state.query)
-			}
-		})
+	const updateQuery = () => {
+		setQuery(search.value)
 	}
+	
+	useEffect(() => {
+		if (query && query.length > 0) {
+			//Give query to App.js
+			getQuery(query)
+		}
+	}, [query]);
 
 	//Update near to input value
-	updateNear = (city) => event => {
-		this.setState({
-			city: event.target.value
-		}, (city) => {
-			//Give near to App.js
-			this.props.getNear(this.state.city)
-		})
+	const updateNear = (city) => event => {
+		setCity(event.target.value)
 	}
 
-	render() {
-		return (
-			<div>
-				{/* Material UI */}
-				<form noValidate autoComplete="off">
-					<TextField
-						id="standard-select-city"
-						select
-						label="Select"
-						style={{margin: 10}}
-						error={ false }
-						// placeholder="City, State"
-						value={this.state.city}
-						// onChange={this.handleChange('city')}
-						// inputRef={input => this.near = input}
-						onChange={this.updateNear('city')}
-						helperText="Select a City"
-     >
-						{cities.map(city => (
-							<MenuItem key={city.value} value={city.value}>
-								{city.label}
-							</MenuItem>
-						))}
-					</TextField>
-				</form>
+	useEffect(() => {
+		//Give near to App.js
+		getNear(city)
+	}, [city])
+
+	return (
+		<div>
+			{/* Material UI */}
+			<form noValidate autoComplete="off">
 				<TextField
-					style={{margin: 10}}
+					id="standard-select-city"
+					select
+					label="Select"
 					error={ false }
-          placeholder="Search for Smoothies!"
-					inputRef={input => this.search = input}
-					type="search"
-					onChange={this.updateQuery}
+					// placeholder="City, State"
+					value={city}
+					// onChange={this.handleChange('city')}
+					// inputRef={input => this.near = input}
+					onChange={updateNear('city')}
+					helperText="Select a City"
 				>
+					{cities.map(city => (
+						<MenuItem key={city.value} value={city.value}>
+							{city.label}
+						</MenuItem>
+					))}
 				</TextField>
-				<Suggestions
-					results={this.props.results}
-					resultClicked={this.props.resultClicked}
-				/>
-			</div>
-		)
-	}
+			</form>
+			<TextField
+				error={ false }
+				placeholder="Search for Smoothies!"
+				inputRef={input => search = input}
+				type="search"
+				onChange={updateQuery}
+			>
+			</TextField>
+			<Suggestions
+				results={results}
+				resultClicked={resultClicked}
+			/>
+		</div>
+	)
 }
 
 export default Search;
