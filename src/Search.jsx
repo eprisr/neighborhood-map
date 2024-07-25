@@ -3,20 +3,8 @@ import Suggestions from './Suggestions';
 import PropTypes from 'prop-types';
 // import Input from '@material-ui/core/Input';
 // import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-
-const styles = theme => ({
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 200,
-  },
-  menu: {
-    width: 200,
-  },
-});
 
 const cities = [
 	{
@@ -127,4 +115,4 @@ Search.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Search);
+export default Search;
