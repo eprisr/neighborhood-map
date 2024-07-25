@@ -60,17 +60,14 @@ class Search extends React.Component {
 	}
 
 	render() {
-		const { classes } = this.props;
-
 		return (
 			<div>
 				{/* Material UI */}
-				<form className={classes.container} noValidate autoComplete="off">
+				<form noValidate autoComplete="off">
 					<TextField
 						id="standard-select-city"
 						select
 						label="Select"
-						className={classes.textField}
 						style={{margin: 10}}
 						error={ false }
 						// placeholder="City, State"
@@ -78,11 +75,6 @@ class Search extends React.Component {
 						// onChange={this.handleChange('city')}
 						// inputRef={input => this.near = input}
 						onChange={this.updateNear('city')}
-						SelectProps={{
-							MenuProps: {
-								className: classes.menu,
-							},
-						}}
 						helperText="Select a City"
      >
 						{cities.map(city => (
@@ -109,9 +101,5 @@ class Search extends React.Component {
 		)
 	}
 }
-
-Search.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default Search;
