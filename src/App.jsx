@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { APIProvider } from '@vis.gl/react-google-maps';
 import Sidebar from './Sidebar';
 import './App.css';
@@ -19,25 +19,22 @@ const options = {
     Authorization: `${FOURSQUARE_API_KEY}`,
   },
 }
-class App extends React.Component {
+function App() {
+	const [locations, setLocations] = useState(null);
+	const [results, setResults] = useState([]);
+	const [result, setResult] = useState({});
+	const [userInputValue, setUserInputValue] = useState({ near: '' });
+	const [center, setCenter] = useState({ lat: 41.85003, lng: -87.65005 });
+	const [dataComplete, setDataComplete] = useState(false);
 	
-	state = {
-		locations: null,
-    results: [],
-    result: {},
-    userInput: {near: ''},
-    center: {lat: 41.85003, lng: -87.65005},
-    dataComplete: false
-  }
-	
-  //Fetch data when componenet mounts
-  componentDidMount() {
+  //Fetch data when component mounts
+  useEffect(() => {
 		this.getData('Chicago, IL')
-  }
+  })
 
   //Fetch data function
-  getData(near) {
-    this.setState({ dataComplete: false })
+  const getData = (near) => {
+    setDataComplete(false)
   //Fetch locations from FourSquare Search API
     fetch(`https://api.foursquare.com/v3/places/search?query=smoothie&near=${near}&sort=DISTANCE&limit=50`, options)
       .then((response) => {
@@ -50,13 +47,9 @@ class App extends React.Component {
         return response.json()
       })
       //Update locations array from data
-      .then((response) => this.setState({ locations: response.results }, () => {
-        if(this.state.results.length === 0) {
-          this.setState({ results: this.state.locations })
-        }
-
-        this.updateMap()
-      } ))
+			.then((response) => {
+				setLocations(response.results)
+      })
       .catch((error) =>
 				Swal.fire({
 					icon: "error",
@@ -64,87 +57,99 @@ class App extends React.Component {
 					text: "Unable to Retrieve Data.",
 				})
       );
-  }
+	}
+	
+	useEffect(() => {
+		if (results.length === 0) setResults(locations)
+
+    updateMap()
+	}, [locations])
+	
 
   //Grab query from search by venue name input
-  getQuery = (query) => {
+  const getQuery = (query) => {
     if( query !== '' && query !== undefined) {
       const venue = new RegExp(escapeRegExp(query), 'i');
-		  this.setState((state) => ({
-        results: state.locations.filter((location) => venue.test(location.name))
-      }) );
+		  // this.setState((state) => ({
+      //   results: state.locations.filter((location) => venue.test(location.name))
+      // }) );
+		  setResults(locations.filter((location) => venue.test(location.name)));
 		} else {
-      this.setState({ results: this.state.locations })
+      setResults(locations)
     }
   }
 
   //Grab near from search by location input
-  getNear = (near) => {
-    this.userInput(near);
+  const getNear = (near) => {
+    userInput(near);
   }
 
-  getResult = (r) => {
-    let index = this.state.results.indexOf(r)
-    this.setState({ result: {result: r, index: index} })
+  const getResult = (r) => {
+    let index = results.indexOf(r)
+    setResult({ result: r, index: index })
   }
 
-  userInput = (near) => {
-    this.setState({ userInput: {near: near} }, () => {
-      this.getData(near);
-    })
+  const userInput = (near) => {
+    // this.setState({ userInputValue: {near: near} }, () => {
+    //   this.getData(near);
+		// })
+		setUserInputValue({ near: near })
+	}
+	
+	useEffect(() => {
+		getData()
+	}, [userInputValue])
+	
+
+  const updateMap = () =>{
+    updateCenter()
+    updateResults()
   }
 
-  updateMap = () =>{
-    this.updateCenter()
-    this.updateResults()
-  }
-
-  updateCenter() {
-    if(this.state.locations[0] !== undefined || this.state.locations !== null) {
-      let lat = this.state.locations[0].geocodes.main.latitude
-      let lng = this.state.locations[0].geocodes.main.longitude
-      this.setState({ center: {lat: lat, lng: lng} })
+  const updateCenter = () => {
+    if(locations[0] !== undefined || locations !== null) {
+      let lat = locations[0].geocodes.main.latitude
+      let lng = locations[0].geocodes.main.longitude
+      setCenter({lat: lat, lng: lng })
     } else {
       return;
     }
   }
 
-  updateResults() {
-    this.setState({ results: this.state.locations })
-    this.setState({ dataComplete: true })
+  const updateResults = () => {
+    setResults(locations)
+    setDataComplete(true)
   }
 
-  render() {
-    let retrievedData = this.state.dataComplete;
+	let retrievedData = dataComplete;
 
-    return (
-      <div className="App">
-        <Sidebar
-          locations={this.state.locations}
-          getQuery={this.getQuery}
-          getNear={this.getNear}
-          results={this.state.results}
-          resultClicked={this.getResult}
-        />
-        <APIProvider apiKey={MAPS_API_KEY}>
-          <GoogleMap
-            userInput={this.state.userInput}
-            results={this.state.results}
-            center={this.state.center}
-            result={this.state.result}
-          />
-        </APIProvider>
-        {/* { retrievedData === true &&
-					<GoogleApiWrapper
-						userInput={this.state.userInput}
-						results={this.state.results}
-						center={this.state.center}
-						result={this.state.result}
-					/>
-        } */}
-      </div>
-    )
-  }
+	return (
+		<div className="App">
+			<Sidebar
+				locations={locations}
+				getQuery={getQuery}
+				getNear={getNear}
+				results={results}
+				resultClicked={getResult}
+			/>
+			<APIProvider apiKey={MAPS_API_KEY}>
+				<GoogleMap
+					userInput={userInputValue}
+					results={results}
+					center={center}
+					result={result}
+				/>
+			</APIProvider>
+			{/* { retrievedData === true &&
+				<GoogleApiWrapper
+					userInput={userInputValue}
+					results={results}
+					center={center}
+					result={result}
+				/>
+			} */}
+		</div>
+	)
 }
 
 export default App;
