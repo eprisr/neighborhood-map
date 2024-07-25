@@ -3,104 +3,102 @@ import ReactDOM from 'react-dom';
 import { Map } from '@vis.gl/react-google-maps'
 
 let map;
-class GoogleMap extends React.Component {
-	// state = {
-	// 	markers: [],
-	// 	selectedResult: [],
-	// }
+function GoogleMap({ google, userInput, results, result, center}) {
+	// const [markers, setMarkers] = useState([]);
+	// const [selectedResult, setSelectedResult] = useState([]);
 
 	// //Update map when first loaded
-	// componentDidMount() {
-	// 	this.loadMap();
-	// }
+	// useEffect(() => {
+	// 	loadMap();
+	// }, [])
+	
 
 	// //Map has already been loaded previously
-	// componentDidUpdate(prevProps, prevState) {
-	// 	if(prevProps.google !== this.props.google) {
-	// 		this.loadMap();
-	// 	}
+	// useEffect(() => {
+	// 	loadMap()
+	// }, [google])
+	
 
 	// 	//Check for change in location & load map and markers according to new center
-	// 	if (prevProps.userInput !== this.props.userInput) {
-	// 		this.shiftCenter();
-	// 		this.clearMarkers();
-	// 		this.createMarkers();
-	// 	}
+	//	useEffect(() => {
+		// 	shiftCenter();
+		// 	clearMarkers();
+		// 	createMarkers();
+	//	}, [userInput])
 
 	// 	//Check for change in result in list that has been clicked & add animation, open infowindow
-	// 	if (prevProps.result !== this.props.result) {
-	// 		let i = this.props.result.index;
-	// 		this.markerClicked(this.state.markers[i]);
-	// 	}
-  // }
-
+	// useEffect(() => {
+		// 		let i = result.index;
+		// 		markerClicked(markers[i]);
+	// }, [result])
+	
 	// //Load map - Equivalent to calling initMap() in JS
-	// loadMap() {
+	// const loadMap = () => {
 	// 	//Google API Available
-	//   if (this.props.google) {
+	//   if (google) {
 	// 		//Reference DOM element for map
 	// 		const node = ReactDOM.findDOMNode(this.refs.map);
 
 	// 		const mapOptions = {
-	// 			center: new this.props.google.maps.LatLng(this.props.center),
+	// 			center: new = google.maps.LatLng(=center),
 	// 			zoom: 14,
 	// 			// styles: styles,
 	// 			mapTypeControl: false
 	// 		}
 
 	// 		//Initialize Google Maps
-	// 		map = new this.props.google.maps.Map(node, mapOptions)
+	// 		map = new = google.maps.Map(node, mapOptions)
 	//   }
 
-	// 	this.createMarkers();
+	// 	createMarkers();
 	// }
 
-	// shiftCenter() {
-  //   let center = new this.props.google.maps.LatLng(this.props.center);
+	// const shiftCenter = () => {
+  //   let center = new google.maps.LatLng(center);
   //   map.panTo(center);
 	// }
 
-	// createMarkers() {
+	// const createMarkers = () => {
 	// 	//Loop through locations array for location & name
-	// 	this.props.results.forEach((venue) => {
+	// 	results.forEach((venue) => {
 	// 		//Create markers
 	// 		let position = {
 	// 			lat: venue.location.lat,
 	// 			lng: venue.location.lng
 	// 		};
-	// 		let marker = new this.props.google.maps.Marker({
+	// 		let marker = new google.maps.Marker({
 	// 			position: position,
 	// 			title: venue.name,
-	// 			animation: this.props.google.maps.Animation.DROP,
+	// 			animation: google.maps.Animation.DROP,
 	// 			map: map
 	// 		})
 
 	// 		//Create infowindow
-	// 		marker.infoWindow = new this.props.google.maps.InfoWindow({
+	// 		marker.infoWindow = new google.maps.InfoWindow({
 	// 			content: marker.title + '\n' + venue.location.formattedAddress,
 	// 			maxWidth: 200
 	// 		});
 
 	// 		//Add listener
 	// 		marker.addListener('click', ()=> {
-	// 			this.markerClicked(marker);
+	// 			markerClicked(marker);
 	// 		})
 
-	// 		this.state.markers.push(marker)
+	// 		state.markers.push(marker)
 	// 	})
 	// }
 
-	// clearMarkers() {
-	// 	this.state.markers.forEach((marker) => {
+	// const clearMarkers = () => {
+	// 	markers.forEach((marker) => {
 	// 		marker.setMap(null);
 	// 	})
-	// 	this.state.markers.pop();
+	// 	markers.pop();
 	// }
 
-	// markerClicked(marker) {
+	// const markerClicked = (marker) => {
 	// 	//Close open infoWindows and animations
-	// 	if(this.state.selectedResult.length === 1) {
-	// 		let currentMarker = this.state.selectedResult[0];
+	// 	if(selectedResult.length === 1) {
+	// 		let currentMarker = selectedResult[0];
 	// 		currentMarker.infoWindow.close();
 	// 		currentMarker.setAnimation(null);
 
@@ -108,56 +106,47 @@ class GoogleMap extends React.Component {
 	// 			return;
 	// 		}
 
-	// 		this.state.selectedResult.shift();
+	// 		selectedResult.shift();
 	// 	}
 
-	// 	console.log(this.state.selectedResult)
+	// 	console.log(selectedResult)
 
-	// 	this.state.selectedResult.push(marker);
+	// 	selectedResult.push(marker);
 
 	// 	//Set marker animation
-	// 	marker.setAnimation(this.props.google.maps.Animation.BOUNCE)
+	// 	marker.setAnimation(google.maps.Animation.BOUNCE)
 
 	// 	//Clears marker animation when closed from window
 	// 	marker.infoWindow.addListener('closeclick', () => {
 	// 		marker.setAnimation(null);
-	// 		this.state.selectedResult.shift();
-	// 		console.log(this.state.selectedResult)
+	// 		selectedResult.shift();
+	// 		console.log(selectedResult)
 	// 	})
 
 	// 	//Open infoWindow
 	// 	marker.infoWindow.open(map, marker);
 	// }
 
-	render() {
-		//Set container to display full page
-		const style = {
-			width: '100vw',
-			height: '100vh'
-		};
+	//Set container to display full page
+	const style = {
+		width: '100vw',
+		height: '100vh'
+	};
 
-		return (
-      <div>
-        <div
-          //To be referenced in initMap()
-          // ref="map"
-          style={style}>
-          Loading map...
-					<Map
-						defaultZoom={14}
-						defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
-						onCameraChanged={(ev) =>
-							console.log(
-								'camera changed:',
-								ev.detail.center,
-								'zoom:',
-								ev.detail.zoom
-							)
-						}></Map>
-        </div>
-      </div>
-    )
-	}
+	return (
+		<div>
+			<div
+				//To be referenced in initMap()
+				// ref="map"
+				style={style}>
+				Loading map...
+				<Map
+					defaultZoom={14}
+					defaultCenter={{ lat: -33.860664, lng: 151.208138 }}
+				></Map>
+			</div>
+		</div>
+	)
 }
 
 export default GoogleMap;
