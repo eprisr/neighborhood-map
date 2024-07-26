@@ -5,6 +5,7 @@ import escapeRegExp from 'escape-string-regexp';
 import Sidebar from './Sidebar';
 import GoogleMap from './Map';
 import './App.css';
+import { Box, CssBaseline } from '@mui/material';
 
 const MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const FOURSQUARE_API_KEY = import.meta.env.VITE_FOURSQUARE_API_KEY;
@@ -83,25 +84,30 @@ function App() {
 	
 
   return (
-    <div className="App">
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
       <Sidebar
         locations={locations}
         getQuery={getQuery}
         getNear={getNear}
         results={results}
         resultClicked={getResult}
-			/>
-			{dataComplete &&
-				<APIProvider apiKey={MAPS_API_KEY}>
-					<GoogleMap
-						userInput={userInputValue}
-						results={results}
-						center={center}
-						result={result}
-					/>
-				</APIProvider>
-			}
-    </div>
+      />
+      {dataComplete && (
+        <APIProvider apiKey={MAPS_API_KEY}>
+          <Box
+            component="main"
+            sx={{ flexGrow: 1, width: { sm: `calc(100vw - 240px)` }, height: '100vh' }}>
+            <GoogleMap
+              userInput={userInputValue}
+              results={results}
+              center={center}
+              result={result}
+            />
+          </Box>
+        </APIProvider>
+      )}
+    </Box>
   )
 }
 

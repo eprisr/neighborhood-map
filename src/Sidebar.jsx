@@ -42,8 +42,7 @@ function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
 	)
 
 	return (
-		<Box sx={{ display: 'flex' }}>
-			<CssBaseline />
+		<Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: {sm: 0 } }} aria-label="search">
 			<IconButton
 				color="primary"
 				aria-label="Open drawer"
@@ -52,7 +51,7 @@ function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
 			>
 				<MenuIcon />
 			</IconButton>
-			<Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: {sm: 0 } }} aria-label="search">
+			<Box>
 				<Drawer
 					variant="temporary"
 					open={mobileOpen}
