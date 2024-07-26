@@ -1,22 +1,17 @@
 import React from 'react';
-import { List, ListItem } from '@mui/material';
+import { List, ListItemButton } from '@mui/material';
 
 function Suggestions({ results, resultsClicked }) {
-	//Map over results array
-	//Return list item
-	const options = results.map(r => (
-	<ListItem
-		key={r.id}
-		button={true}
-		onClick={() => resultClicked(r)}
-	>
-		{r.name}
-	</ListItem>
-	))
-
 	return (
 		<List>
-			{options}
+			{results.map(r => (
+				<ListItemButton
+					key={r.fsq_id}
+					onClick={() => resultClicked(r)}
+				>
+					{r.name}
+				</ListItemButton>
+			))}
 		</List>
 	)
 }
