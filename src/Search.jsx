@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Suggestions from './Suggestions';
-import PropTypes from 'prop-types';
-// import Input from '@material-ui/core/Input';
-// import classNames from 'classnames';
 import { MenuItem, TextField } from '@mui/material';
 
 const cities = [
@@ -23,20 +20,15 @@ const cities = [
 		label: 'New York, NY',
 	}
 ]
-function Search() {
+
+function Search({ locations, getQuery, getNear, results, resultClicked }) {
 	const [query, setQuery] = useState('');
 	const [city, setCity] = useState('Chicago, IL');
-
-	//Handle input (MaterialUI)
-	// handleChange = name => event => {
-	//   this.setState({
-	//     [name]: event.target.value,
-	//   });
-	// };
+	const searchRef = useRef('')
 
   //Update query to input value
 	const updateQuery = () => {
-		setQuery(search.value)
+		setQuery(searchRef.current.value)
 	}
 	
 	useEffect(() => {
@@ -65,10 +57,7 @@ function Search() {
 					select
 					label="Select"
 					error={ false }
-					// placeholder="City, State"
 					value={city}
-					// onChange={this.handleChange('city')}
-					// inputRef={input => this.near = input}
 					onChange={updateNear('city')}
 					helperText="Select a City"
 				>
@@ -82,7 +71,7 @@ function Search() {
 			<TextField
 				error={ false }
 				placeholder="Search for Smoothies!"
-				inputRef={input => search = input}
+				inputRef={searchRef}
 				type="search"
 				onChange={updateQuery}
 			>
