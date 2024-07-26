@@ -29,7 +29,7 @@ function App() {
 	
   //Fetch data when component mounts
   useEffect(() => {
-		this.getData('Chicago, IL')
+		getData('Chicago, IL')
   })
 
   //Fetch data function

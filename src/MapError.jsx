@@ -13,8 +13,8 @@ function MapError() {
 	})
 
 	componentWillUnmount = () => {
-		window.clearTimeout(this.state.timeout);
-		window.clearTimeout(this.state.error);
+		window.clearTimeout(timeout);
+		window.clearTimeout(error);
 	}
 
 	const showAlert = () => {
