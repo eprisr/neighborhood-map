@@ -2,13 +2,27 @@ import React, { useState } from 'react';
 import './index.css';
 import Search from './Search';
 import MenuIcon from '@mui/icons-material/Menu';
-import { IconButton, List } from '@mui/material';
+import { Box, CssBaseline, Drawer, IconButton, List } from '@mui/material';
+
+const drawerWidth = 240;
 
 function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const [isClosing, setIsClosing] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(prevMobileState => !prevMobileState);
+	const handleDrawerClose = () => {
+		setIsClosing(true);
+		setMobileOpen(true);
+	}
+
+	const handleDrawerTransitionEnd = () => {
+		setIsClosing(false);
+	}
+
+	const handleDrawerToggle = () => {
+		if (!isClosing) {
+			setMobileOpen(!mobileOpen);
+		}
   };
 
 	const drawer = (
@@ -28,34 +42,44 @@ function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
 	)
 
 	return (
-		<div>
+		<Box sx={{ display: 'flex' }}>
+			<CssBaseline />
 			<IconButton
 				color="primary"
 				aria-label="Open drawer"
 				onClick={handleDrawerToggle}
+				sx={{ mr: 20, display: { sm: 'none' } }}
 			>
 				<MenuIcon />
 			</IconButton>
-			<nav>
-				{/* <Drawer
-					container={this.props.container}
+			<Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: {sm: 0 } }} aria-label="search">
+				<Drawer
 					variant="temporary"
-					open={this.state.mobileOpen}
-					onClose={this.handleDrawerToggle}
+					open={mobileOpen}
+					onTransitionEnd={handleDrawerTransitionEnd}
+					onClose={handleDrawerClose}
 					ModalProps={{
-						keepMounted: true, // Better open performance on mobile. (-MaterialUI)
+						keepMounted: true,
+					}}
+					sx={{
+						display: { xs: 'block', sm: 'none' },
+						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
 					}}
 				>
 					{drawer}
 				</Drawer>
 				<Drawer
 					variant="permanent"
+					sx={{
+						display: { xs: 'none', sm: 'block' },
+						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+					}}
 					open
 				>
 					{drawer}
-				</Drawer> */}
-			</nav>
-		</div>
+				</Drawer>
+			</Box>
+		</Box>
 	)
 }
 
