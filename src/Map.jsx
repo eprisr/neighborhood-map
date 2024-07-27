@@ -46,11 +46,12 @@ function GoogleMap({ google, userInput, results, result, center }) {
 	)
 
 	const handleInfoWindowClose = useCallback(() => {
-			setSelectedResultKey(null);
-		}, [])
-
-	const handleMarkerClick = useCallback((venue) => {
+		setSelectedResultKey(null);
+	}, [])
+	
+	const handleMarkerClick = useCallback((venue, ev) => {
 		setSelectedResultKey(venue.fsq_id)
+		map.panTo(ev.latLng)
 	}, []);
 	
 	return (
@@ -80,7 +81,7 @@ function GoogleMap({ google, userInput, results, result, center }) {
 export default GoogleMap;
 
 const MapMarker = ({ venue, onClick, setMarkerRef }) => {
-	const handleClick = useCallback(() => onClick(venue), [onClick, venue]);
+	const handleClick = useCallback((ev) => onClick(venue, ev), [onClick, venue]);
 	const ref = useCallback(
 		(marker) => {
 			setMarkerRef(marker, venue.fsq_id)
