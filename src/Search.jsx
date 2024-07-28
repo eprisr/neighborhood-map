@@ -28,6 +28,7 @@ function Search({ locations, getQuery, getNear, results, resultClicked }) {
 				<TextField
 					error={false}
 					placeholder='City, ST'
+					type="search"
 					onChange={(e) => {
 						debouncedCity();
 						setCity(e.target.value)
