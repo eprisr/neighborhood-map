@@ -10,16 +10,16 @@ function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
 
-	const handleDrawerClose = () => {
+	const closeDrawer = () => {
 		setIsClosing(true);
 		setMobileOpen(true);
 	}
 
-	const handleDrawerTransitionEnd = () => {
+	const endDrawerTransition = () => {
 		setIsClosing(false);
 	}
 
-	const handleDrawerToggle = () => {
+	const toggleDrawer = () => {
 		if (!isClosing) {
 			setMobileOpen(!mobileOpen);
 		}
@@ -31,11 +31,11 @@ function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
 				<h1>SEARCH</h1>
 
 				<Search
-					locations={locations}
+					// locations={locations}
 					getQuery={getQuery}
 					getNear={getNear}
 					results={results}
-					resultClicked={resultClicked}
+					// resultClicked={resultClicked}
 				/>
 			</List>
 		</div>
@@ -46,7 +46,7 @@ function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
 			<IconButton
 				color="primary"
 				aria-label="Open drawer"
-				onClick={handleDrawerToggle}
+				onClick={toggleDrawer}
 				sx={{ mr: 20, display: { sm: 'none' } }}
 			>
 				<MenuIcon />
@@ -55,8 +55,8 @@ function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
 				<Drawer
 					variant="temporary"
 					open={mobileOpen}
-					onTransitionEnd={handleDrawerTransitionEnd}
-					onClose={handleDrawerClose}
+					onTransitionEnd={endDrawerTransition}
+					onClose={closeDrawer}
 					ModalProps={{
 						keepMounted: true,
 					}}
