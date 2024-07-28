@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import useDebounce from './utils/useDebounce';
 import Suggestions from './Suggestions';
-import { TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 
 function Search({ locations, getQuery, getNear, results, resultClicked }) {
 	const [query, setQuery] = useState('');
@@ -20,24 +20,29 @@ function Search({ locations, getQuery, getNear, results, resultClicked }) {
 
 	return (
 		<div>
-			<TextField
-				error={false}
-				placeholder='City, ST'
-				onChange={(e) => {
-					debouncedCity();
-					setCity(e.target.value)
-				}}
-			/>
-			<TextField
-				error={ false }
-				placeholder="Find Your Smoothie"
-				type="search"
-				onChange={(e) => {
-					debouncedQuery();
-					setQuery(e.target.value)
-				}}
+			<Box
+				component="form"
+				noValidate
+				autoComplete='off'
 			>
-			</TextField>
+				<TextField
+					error={false}
+					placeholder='City, ST'
+					onChange={(e) => {
+						debouncedCity();
+						setCity(e.target.value)
+					}}
+				/>
+				<TextField
+					error={ false }
+					placeholder="Find Your Smoothie"
+					type="search"
+					onChange={(e) => {
+						debouncedQuery();
+						setQuery(e.target.value)
+					}}
+				/>
+			</Box>
 			<Suggestions
 				results={results}
 				// resultClicked={resultClicked}
