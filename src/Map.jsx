@@ -4,26 +4,26 @@ import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
 const MAP_ID = import.meta.env.VITE_MAP_ID
 
-function GoogleMap({ google, userInput, results, result, center }) {
+// TODO: Handle Map Update with Change in Location and / or Results
+
+function GoogleMap({ userInput, results, result, center }) {
+	const map = useMap();
 	const [markers, setMarkers] = useState({});
 	const [selectedResultKey, setSelectedResultKey] = useState(null);
 
-	const selectedResult = useMemo(
-		() => results && selectedResultKey
-			? results.find(r => r.fsq_id === selectedResultKey)
-			: null,
-		[results, selectedResultKey]
-	);
-
-	const map = useMap();
+	useEffect(() => {
+		if (!map) return;
+		map.panTo(center)
+	}, [center])
+	
 	const clusterer = useMemo(() => {
 		if (!map) return null;
 		return new MarkerClusterer({ map });
 	}, [map]);
-
+	
 	useEffect(() => {
 		if (!clusterer) return;
-
+		
 		clusterer.clearMarkers();
 		clusterer.addMarkers(Object.values(markers));
 	}, [clusterer, markers])
@@ -32,12 +32,12 @@ function GoogleMap({ google, userInput, results, result, center }) {
 		(marker, key) => {
 			setMarkers(markers => {
 				if ((marker && markers[key]) || (!marker && !markers[key])) return markers;
-
+				
 				if (marker) {
 					return { ...markers, [key]: marker };
 				} else {
 					const { [key]: _, ...newMarkers } = markers;
-
+					
 					return newMarkers;
 				}
 			})
@@ -45,17 +45,26 @@ function GoogleMap({ google, userInput, results, result, center }) {
 		[],
 	)
 
+	const selectedResult = useMemo(
+		() => results && selectedResultKey
+			? results.find(r => r.fsq_id === selectedResultKey)
+			: null,
+		[results, selectedResultKey]
+	);
+
 	const handleInfoWindowClose = useCallback(() => {
 		setSelectedResultKey(null);
 	}, [])
 	
 	const handleMarkerClick = useCallback((venue, ev) => {
 		setSelectedResultKey(venue.fsq_id)
+
+		if (!map) return
 		map.panTo(ev.latLng)
 	}, []);
 	
 	return (
-    <Map defaultZoom={14} defaultCenter={center} mapId={MAP_ID}>
+    <Map defaultZoom={10} defaultCenter={center} mapId={MAP_ID}>
 			{results.map(venue => (
 				<MapMarker
 					key={venue.fsq_id}

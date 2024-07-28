@@ -1,84 +1,46 @@
 import React, { useEffect, useRef, useState } from 'react';
+import useDebounce from './utils/useDebounce';
 import Suggestions from './Suggestions';
-import { MenuItem, TextField } from '@mui/material';
-
-const cities = [
-	{
-		value: 'Chicago, IL',
-		label: 'Chicago, IL',
-	},{
-		value: 'Detroit, MI',
-		label: 'Detroit, MI',
-	},{
-		value: 'Houston, TX',
-		label: 'Houston, TX',
-	},{
-		value: 'Miami, FL',
-		label: 'Miami, FL',
-	},{
-		value: 'New York, NY',
-		label: 'New York, NY',
-	}
-]
+import { TextField } from '@mui/material';
 
 function Search({ locations, getQuery, getNear, results, resultClicked }) {
 	const [query, setQuery] = useState('');
-	const [city, setCity] = useState('Chicago, IL');
-	const searchRef = useRef('')
+	const [city, setCity] = useState('');
 
-  //Update query to input value
 	const updateQuery = () => {
-		setQuery(searchRef.current.value)
-	}
-	
-	useEffect(() => {
-		if (query && query.length > 0) {
-			//Give query to App.js
-			getQuery(query)
-		}
-	}, [query]);
-
-	//Update near to input value
-	const updateNear = (city) => event => {
-		setCity(event.target.value)
+		getQuery(query);
 	}
 
-	useEffect(() => {
-		//Give near to App.js
-		getNear(city)
-	}, [city])
+	const updateNear = () => {
+		getNear(city);
+	}
+
+	const debouncedQuery = useDebounce(updateQuery)
+	const debouncedCity = useDebounce(updateNear)
 
 	return (
 		<div>
-			{/* Material UI */}
-			<form noValidate autoComplete="off">
-				<TextField
-					id="standard-select-city"
-					select
-					label="Select"
-					error={ false }
-					value={city}
-					onChange={updateNear('city')}
-					helperText="Select a City"
-				>
-					{cities.map(city => (
-						<MenuItem key={city.value} value={city.value}>
-							{city.label}
-						</MenuItem>
-					))}
-				</TextField>
-			</form>
+			<TextField
+				error={false}
+				placeholder='City, ST'
+				onChange={(e) => {
+					debouncedCity();
+					setCity(e.target.value)
+				}}
+			/>
 			<TextField
 				error={ false }
-				placeholder="Search for Smoothies!"
-				inputRef={searchRef}
+				placeholder="Find Your Smoothie"
 				type="search"
-				onChange={updateQuery}
+				onChange={(e) => {
+					debouncedQuery();
+					setQuery(e.target.value)
+				}}
 			>
 			</TextField>
 			<Suggestions
 				results={results}
-				resultClicked={resultClicked}
+				// resultClicked={resultClicked}
 			/>
 		</div>
 	)
