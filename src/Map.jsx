@@ -12,6 +12,7 @@ function GoogleMap({ userInput, results, result, center }) {
 	const [selectedResultKey, setSelectedResultKey] = useState(null);
 
 	useEffect(() => {
+		handleInfoWindowClose()
 		if (!map) return;
 		map.panTo(center)
 	}, [center])
