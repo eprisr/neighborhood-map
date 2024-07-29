@@ -3,7 +3,7 @@ import useDebounce from './utils/useDebounce';
 import Suggestions from './Suggestions';
 import { Box, TextField } from '@mui/material';
 
-function Search({ locations, getQuery, getNear, results, resultClicked }) {
+function Search({ locations, getQuery, getNear, results, getResult }) {
 	const [query, setQuery] = useState('');
 	const [city, setCity] = useState('');
 
@@ -46,7 +46,7 @@ function Search({ locations, getQuery, getNear, results, resultClicked }) {
 			</Box>
 			<Suggestions
 				results={results}
-				// resultClicked={resultClicked}
+				getResult={getResult}
 			/>
 		</div>
 	)

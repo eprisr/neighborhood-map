@@ -6,7 +6,7 @@ import { Box, CssBaseline, Drawer, IconButton, List } from '@mui/material';
 
 const drawerWidth = 240;
 
-function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
+function Sidebar({ locations, getQuery, getNear, results, getResult }) {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
 
@@ -35,7 +35,7 @@ function Sidebar({ locations, getQuery, getNear, results, resultClicked }) {
 					getQuery={getQuery}
 					getNear={getNear}
 					results={results}
-					// resultClicked={resultClicked}
+					getResult={getResult}
 				/>
 			</List>
 		</div>

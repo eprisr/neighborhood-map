@@ -20,6 +20,7 @@ function App() {
 
 	function getData(near) {
 		setDataComplete(false);
+
 		fetch(
       `https://api.foursquare.com/v3/places/search?query=smoothie&near=${near}&sort=DISTANCE&limit=50`,
       {
@@ -91,7 +92,7 @@ function App() {
         getQuery={getQuery}
         getNear={getNear}
         results={results}
-        resultClicked={getResult}
+        getResult={getResult}
       />
       {dataComplete && (
         <APIProvider apiKey={MAPS_API_KEY}>
