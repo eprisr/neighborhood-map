@@ -2,9 +2,18 @@ import React, { useState } from 'react';
 import './index.css';
 import Search from './Search';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Box, CssBaseline, Drawer, IconButton, List } from '@mui/material';
+import { AppBar, Box, Drawer, IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Close, HelpOutline } from '@mui/icons-material';
 
-const drawerWidth = 240;
+const drawerWidth = {
+	xs: '100%',
+	md: '30%'
+}
+
+const drawerHeight = {
+	xs: '80%',
+	md: '100%'
+}
 
 function Sidebar({ locations, getQuery, getNear, results, resultsError, getResult }) {
 	const [mobileOpen, setMobileOpen] = useState(false);
@@ -12,7 +21,7 @@ function Sidebar({ locations, getQuery, getNear, results, resultsError, getResul
 
 	const closeDrawer = () => {
 		setIsClosing(true);
-		setMobileOpen(true);
+		setMobileOpen(false);
 	}
 
 	const endDrawerTransition = () => {
@@ -23,37 +32,60 @@ function Sidebar({ locations, getQuery, getNear, results, resultsError, getResul
 		if (!isClosing) {
 			setMobileOpen(!mobileOpen);
 		}
-  };
-
+	};
+	
 	const drawer = (
 		<div>
-			<List>
-				<h1>SEARCH</h1>
-
-				<Search
-					// locations={locations}
-					getQuery={getQuery}
-					getNear={getNear}
-					results={results}
-					resultsError={resultsError}
-					getResult={getResult}
-				/>
-			</List>
+			<Toolbar sx={{ justifyContent: 'space-between' }}>
+				<Typography variant='h5' component='h1'>Search</Typography>
+				<Stack direction='row' spacing={1}>
+					<Tooltip
+						arrow
+						placement="top-end"
+						title="Search for smoothies near you by typing in your location (ie Chicago, IL). You can also filter your search by the name of store location."
+					>
+						<IconButton aria-label="Help">
+							<HelpOutline />
+						</IconButton>
+					</Tooltip>
+					<IconButton sx={{ display: { md: 'none' } }} aria-label="Close search" onClick={() => closeDrawer()}>
+						<Close />
+					</IconButton>
+				</Stack>
+			</Toolbar>
+			<Search
+				// locations={locations}
+				getQuery={getQuery}
+				getNear={getNear}
+				results={results}
+				resultsError={resultsError}
+				getResult={getResult}
+			/>
 		</div>
 	)
 
 	return (
-		<Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: {sm: 0 } }} aria-label="search">
-			<IconButton
-				color="primary"
-				aria-label="Open drawer"
-				onClick={toggleDrawer}
-				sx={{ mr: 20, display: { sm: 'none' } }}
+		<>
+			<AppBar
+				position="fixed"
+				sx={{
+					display: { md: 'none'}
+				}}
 			>
-				<MenuIcon />
-			</IconButton>
-			<Box>
+				<Toolbar>
+					<IconButton
+						color="inherit"
+						aria-label="Open drawer"
+						edge="start"
+						onClick={toggleDrawer}
+					>
+						<MenuIcon />
+					</IconButton>
+				</Toolbar>
+			</AppBar>
+			<Box sx={{ width: { md: drawerWidth.md }, flexShrink: { md: 0 } }} aria-label="search">
 				<Drawer
+					anchor="top"
 					variant="temporary"
 					open={mobileOpen}
 					onTransitionEnd={endDrawerTransition}
@@ -62,8 +94,8 @@ function Sidebar({ locations, getQuery, getNear, results, resultsError, getResul
 						keepMounted: true,
 					}}
 					sx={{
-						display: { xs: 'block', sm: 'none' },
-						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+						display: { xs: 'block', md: 'none' },
+						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, height: drawerHeight },
 					}}
 				>
 					{drawer}
@@ -71,15 +103,15 @@ function Sidebar({ locations, getQuery, getNear, results, resultsError, getResul
 				<Drawer
 					variant="permanent"
 					sx={{
-						display: { xs: 'none', sm: 'block' },
-						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+						display: { xs: 'none', md: 'block' },
+						'& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, height: drawerHeight },
 					}}
 					open
 				>
 					{drawer}
 				</Drawer>
 			</Box>
-		</Box>
+		</>
 	)
 }
 

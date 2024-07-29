@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import useDebounce from './utils/useDebounce';
 import Suggestions from './Suggestions';
 import { Box, TextField } from '@mui/material';
@@ -24,6 +24,9 @@ function Search({ locations, getQuery, getNear, results, resultsError, getResult
 				component="form"
 				noValidate
 				autoComplete='off'
+				sx={{
+					p: 2
+				}}
 			>
 				<TextField
 					error={resultsError !== ''}
@@ -33,7 +36,11 @@ function Search({ locations, getQuery, getNear, results, resultsError, getResult
 						debouncedCity();
 						setCity(e.target.value)
 					}}
+					fullWidth
 					helperText={resultsError}
+					sx={{
+						marginBottom: 1
+					}}
 				/>
 				<TextField
 					error={ false }
@@ -43,6 +50,7 @@ function Search({ locations, getQuery, getNear, results, resultsError, getResult
 						debouncedQuery();
 						setQuery(e.target.value)
 					}}
+					fullWidth
 				/>
 			</Box>
 			<Suggestions
