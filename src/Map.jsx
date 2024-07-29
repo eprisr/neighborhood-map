@@ -14,6 +14,10 @@ function GoogleMap({ userInput, results, result, center }) {
 		if (!map) return;
 		map.panTo(center)
 	}, [center])
+
+	useEffect(() => {
+		if (result.result) setSelectedResultKey(result.result.fsq_id)
+	}, [result])
 	
 	const clusterer = useMemo(() => {
 		if (!map) return null;
