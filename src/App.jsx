@@ -19,7 +19,7 @@ function App() {
 	const [dataComplete, setDataComplete] = useState(false)
 
 	function getData(near) {
-		setDataComplete(false);
+		if (setDataComplete === true) setDataComplete(false)
 
 		fetch(
       `https://api.foursquare.com/v3/places/search?query=smoothie&near=${near}&sort=DISTANCE&limit=50`,
