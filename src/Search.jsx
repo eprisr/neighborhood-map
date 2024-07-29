@@ -3,7 +3,7 @@ import useDebounce from './utils/useDebounce';
 import Suggestions from './Suggestions';
 import { Box, TextField } from '@mui/material';
 
-function Search({ locations, getQuery, getNear, results, getResult }) {
+function Search({ locations, getQuery, getNear, results, resultsError, getResult }) {
 	const [query, setQuery] = useState('');
 	const [city, setCity] = useState('');
 
@@ -26,13 +26,14 @@ function Search({ locations, getQuery, getNear, results, getResult }) {
 				autoComplete='off'
 			>
 				<TextField
-					error={false}
+					error={resultsError !== ''}
 					placeholder='City, ST'
 					type="search"
 					onChange={(e) => {
 						debouncedCity();
 						setCity(e.target.value)
 					}}
+					helperText={resultsError}
 				/>
 				<TextField
 					error={ false }

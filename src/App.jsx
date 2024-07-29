@@ -14,12 +14,14 @@ function App() {
   const [locations, setLocations] = useState(null)
   const [results, setResults] = useState([])
   const [result, setResult] = useState({})
-  const [userInputValue, setUserInputValue] = useState({ near: '' })
+	const [userInputValue, setUserInputValue] = useState({ near: '' })
+	const [resultsError, setResultsError] = useState('')
   const [center, setCenter] = useState({ lat: 41.85003, lng: -87.65005 })
 	const [dataComplete, setDataComplete] = useState(false)
 
 	function getData(near) {
 		if (setDataComplete === true) setDataComplete(false)
+		if (resultsError !== '') setResultsError('')
 
 		fetch(
       `https://api.foursquare.com/v3/places/search?query=smoothie&near=${near}&sort=DISTANCE&limit=50`,
@@ -31,8 +33,14 @@ function App() {
         },
       }
 		).then((res) => {
-			return res.json()
+			if (res.status === 200) return res.json();
 		}).then((res) => {
+			console.log("fetching...", res)
+			if (res === undefined) {
+				setResultsError("Please enter a valid location. (ie Chicago,IL or London")
+				return;
+			}
+
 			setLocations(res.results)
 			setResults(res.results)
 			setDataComplete(true)
@@ -91,7 +99,8 @@ function App() {
         locations={locations}
         getQuery={getQuery}
         getNear={getNear}
-        results={results}
+				results={results}
+				resultsError={resultsError}
         getResult={getResult}
       />
       {dataComplete && (

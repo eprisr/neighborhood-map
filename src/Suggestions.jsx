@@ -10,7 +10,7 @@ function Suggestions({ results, getResult }) {
 
 	return (
     <List>
-      {results.map((r) => (
+      {results && results.map((r) => (
         <ListItem key={r.fsq_id}>
 					<ListItemButton
 						selected={selectedIndex === r.fsq_id}

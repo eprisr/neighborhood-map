@@ -68,7 +68,7 @@ function GoogleMap({ userInput, results, result, center }) {
 	
 	return (
     <Map defaultZoom={10} defaultCenter={center} mapId={MAP_ID}>
-			{results.map(venue => (
+			{results && results.map(venue => (
 				<MapMarker
 					key={venue.fsq_id}
 					venue={venue}
