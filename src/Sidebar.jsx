@@ -15,7 +15,7 @@ const drawerHeight = {
 	md: '100%'
 }
 
-function Sidebar({ locations, getQuery, getNear, results, resultsError, getResult }) {
+function Sidebar({ getQuery, getNear, results, resultsError, getResult }) {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);
 

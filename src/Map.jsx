@@ -4,7 +4,7 @@ import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
 const MAP_ID = import.meta.env.VITE_MAP_ID
 
-function GoogleMap({ userInput, results, result, center }) {
+function GoogleMap({ results, result, center }) {
 	const map = useMap();
 	const [markers, setMarkers] = useState({});
 	const [selectedResultKey, setSelectedResultKey] = useState(null);
