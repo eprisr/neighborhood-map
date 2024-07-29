@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { AdvancedMarker, InfoWindow, Map, Pin, useMap } from '@vis.gl/react-google-maps'
 import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
-const MAP_ID = import.meta.env.VITE_MAP_ID
+const MAP_ID = import.meta.env.MAP_ID
 
 function GoogleMap({ results, result, center }) {
 	const map = useMap();

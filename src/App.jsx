@@ -7,8 +7,8 @@ import GoogleMap from './Map';
 import './App.css';
 import { Box, CssBaseline, Toolbar } from '@mui/material';
 
-const MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-const FOURSQUARE_API_KEY = import.meta.env.VITE_FOURSQUARE_API_KEY;
+const MAPS_API_KEY = import.meta.env.GOOGLE_MAPS_API_KEY;
+const FOURSQUARE_API_KEY = import.meta.env.FOURSQUARE_API_KEY;
 
 function App() {
   const [locations, setLocations] = useState(null)
