@@ -3,7 +3,7 @@ import './index.css';
 import Search from './Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Drawer, IconButton, Stack, Toolbar, Tooltip, Typography } from '@mui/material';
-import { Close, HelpOutline } from '@mui/icons-material';
+import { Close, HelpOutlineOutlined as HelpOutline } from '@mui/icons-material';
 
 const drawerWidth = {
 	xs: '100%',

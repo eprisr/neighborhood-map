@@ -20,7 +20,7 @@ function Suggestions({ results, getResult }) {
 						}}
           >
 						<Grid container spacing={2}>
-							<Grid item xs={12}>{r.name}</Grid>
+							<Grid size={12}>{r.name}</Grid>
 						</Grid>
           </ListItemButton>
         </ListItem>
