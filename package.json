@@ -2,6 +2,7 @@
 	"name": "neighborhood-map-react",
 	"version": "2.0.0",
 	"private": true,
+	"type": "module",
 	"dependencies": {
 		"@emotion/react": "^11.13.0",
 		"@emotion/styled": "^11.13.0",
@@ -9,16 +10,10 @@
 		"@mui/icons-material": "^5.16.5",
 		"@mui/material": "^5.16.4",
 		"@vis.gl/react-google-maps": "^1.1.0",
-		"dotenv": "^16.4.5",
 		"escape-string-regexp": "^5.0.0",
-		"prop-types": "^15.8.1",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"react-foursquare": "^1.0.3",
-		"react-icons": "^4.10.1",
-		"react-router-dom": "^6.25.1",
 		"serve": "^14.2.3",
-		"sort-by": "^1.2.0",
 		"sweetalert2": "^11.12.3"
 	},
 	"scripts": {
@@ -37,8 +32,8 @@
 		"not op_mini all"
 	],
 	"devDependencies": {
-		"@vitejs/plugin-react": "^4.3.1",
-		"vite": "^5.4.21"
+		"@vitejs/plugin-react": "^6.1.1",
+		"vite": "^8.2.2"
 	},
 	"overrides": {
 		"esbuild": "^0.25.0",
