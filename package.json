@@ -4,6 +4,7 @@
 	"private": true,
 	"type": "module",
 	"dependencies": {
+		"@api/fsq-developers-places": "file:.api/apis/fsq-developers-places",
 		"@emotion/react": "^11.13.0",
 		"@emotion/styled": "^11.13.0",
 		"@googlemaps/markerclusterer": "^2.5.3",
@@ -11,6 +12,7 @@
 		"@mui/material": "^9.4.0",
 		"@vis.gl/react-google-maps": "^1.1.0",
 		"escape-string-regexp": "^5.0.0",
+		"express": "^5.2.1",
 		"react": "^19.2.8",
 		"react-dom": "^19.2.8",
 		"serve": "^14.2.3",
@@ -18,7 +20,10 @@
 	},
 	"scripts": {
 		"start": "vite",
-		"build": "vite build",
+		"dev": "node server",
+		"build": "npm run build:client && npm run build:server",
+		"build:client": "vite build --outDir dist/client",
+		"build:server": "vite build --outDir dist/server --ssr src/entry-server.jsx",
 		"serve": "vite preview",
 		"test": "react-scripts test"
 	},
@@ -32,7 +37,10 @@
 		"not op_mini all"
 	],
 	"devDependencies": {
+		"@types/express": "^5.0.6",
+		"@types/node": "^26.4.0",
 		"@vitejs/plugin-react": "^6.1.1",
+		"typescript": "^7.0.2",
 		"vite": "^8.2.2"
 	},
 	"overrides": {
