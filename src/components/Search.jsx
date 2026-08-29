@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import useDebounce from './utils/useDebounce';
-import Suggestions from './Suggestions';
-import { Box, TextField } from '@mui/material';
+import React, { useState } from 'react'
+import useDebounce from '../utils/useDebounce'
+import Suggestions from './Suggestions'
+import { Box, TextField } from '@mui/material'
 
 function Search({ getQuery, getNear, results, resultsError, getResult }) {
-	const [query, setQuery] = useState('');
-	const [city, setCity] = useState('');
+	const [query, setQuery] = useState('')
+	const [city, setCity] = useState('')
 
 	const updateQuery = () => {
-		getQuery(query);
+		getQuery(query)
 	}
 
 	const updateNear = () => {
-		getNear(city);
+		getNear(city)
 	}
 
 	const debouncedQuery = useDebounce(updateQuery)
@@ -23,42 +23,38 @@ function Search({ getQuery, getNear, results, resultsError, getResult }) {
 			<Box
 				component="form"
 				noValidate
-				autoComplete='off'
+				autoComplete="off"
 				sx={{
-					p: 2
-				}}
-			>
+					p: 2,
+				}}>
 				<TextField
 					error={resultsError !== ''}
-					placeholder='City, ST'
+					placeholder="City, ST"
 					type="search"
 					onChange={(e) => {
-						debouncedCity();
+						debouncedCity()
 						setCity(e.target.value)
 					}}
 					fullWidth
 					helperText={resultsError}
 					sx={{
-						marginBottom: 1
+						marginBottom: 1,
 					}}
 				/>
 				<TextField
-					error={ false }
+					error={false}
 					placeholder="Find Your Smoothie"
 					type="search"
 					onChange={(e) => {
-						debouncedQuery();
+						debouncedQuery()
 						setQuery(e.target.value)
 					}}
 					fullWidth
 				/>
 			</Box>
-			<Suggestions
-				results={results}
-				getResult={getResult}
-			/>
+			<Suggestions results={results} getResult={getResult} />
 		</div>
 	)
 }
 
-export default Search;
+export default Search
