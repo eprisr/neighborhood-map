@@ -1,11 +1,25 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import useDebounce from '../utils/useDebounce'
 import Suggestions from './Suggestions'
 import { Box, TextField } from '@mui/material'
 
-function Search({ getQuery, getNear, results, resultsError, getResult }) {
-	const [query, setQuery] = useState('')
-	const [city, setCity] = useState('')
+interface SearchProps {
+	getQuery: (query: string) => void
+	getNear: (near: string) => void
+	results: any[]
+	resultsError: string
+	getResult: (r: string) => void
+}
+
+function Search({
+	getQuery,
+	getNear,
+	results,
+	resultsError,
+	getResult,
+}: SearchProps) {
+	const [query, setQuery] = useState<string>('')
+	const [city, setCity] = useState<string>('')
 
 	const updateQuery = () => {
 		getQuery(query)
