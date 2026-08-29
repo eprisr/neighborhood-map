@@ -6,6 +6,7 @@ import { Box, CssBaseline, Toolbar } from '@mui/material'
 import Swal from 'sweetalert2'
 import MapsProvider from './MapsProvider'
 import { Locations } from './types'
+import SearchContext from './SearchContext'
 
 function App() {
 	const [locations, setLocations] = useState<Locations[]>([])
@@ -91,28 +92,29 @@ function App() {
 	}, [locations])
 
 	return (
-		<Box sx={{ display: 'flex' }}>
-			<CssBaseline />
-			<Sidebar
-				getQuery={getQuery}
-				getNear={getNear}
-				results={results}
-				resultsError={resultsError}
-				getResult={getResult}
-			/>
-			{dataComplete && (
-				<Box
-					component="main"
-					sx={{
-						flexGrow: 1,
-						width: { md: `calc(100vw - 240px)` },
-						height: '100vh',
-					}}>
-					<Toolbar sx={{ display: { md: 'none' } }} />
-					<MapsProvider results={results} center={center} result={result} />
-				</Box>
-			)}
-		</Box>
+		<SearchContext value={{}}>
+			<Box sx={{ display: 'flex' }}>
+				<CssBaseline />
+				<Sidebar
+					getNear={getNear}
+					results={results}
+					resultsError={resultsError}
+					getResult={getResult}
+				/>
+				{dataComplete && (
+					<Box
+						component="main"
+						sx={{
+							flexGrow: 1,
+							width: { md: `calc(100vw - 240px)` },
+							height: '100vh',
+						}}>
+						<Toolbar sx={{ display: { md: 'none' } }} />
+						<MapsProvider results={results} center={center} result={result} />
+					</Box>
+				)}
+			</Box>
+		</SearchContext>
 	)
 }
 
