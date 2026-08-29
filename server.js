@@ -2,20 +2,43 @@ import fs from 'node:fs'
 import path from 'node:path'
 import express from 'express'
 import { createServer as createViteServer } from 'vite'
+import fsqDevelopersPlaces from '@api/fsq-developers-places'
 
 // Constants
 const isProduction = process.env.NODE_ENV === 'production'
 const port = process.env.PORT || 5173
 const base = process.env.BASE || '/'
 
+if (!isProduction) process.loadEnvFile('.env.local')
+
 // Cached production assets
 const templateHtml = isProduction
 	? await fs.readFile('./dist/client/index.html', 'utf-8')
 	: ''
 
-async function createServer() {
-	const app = express()
+const app = express()
 
+fsqDevelopersPlaces.auth(process.env.FOURSQUARE_API_KEY)
+
+app.get('/api/places', async (req, res) => {
+	const near = req.query.near
+	try {
+		const { data, status } = await fsqDevelopersPlaces.placeSearch({
+			query: 'smoothie',
+			near,
+			sort: 'DISTANCE',
+			limit: 50,
+			'X-Places-Api-Version': '2025-06-17',
+		})
+
+		res.status(status).json(data)
+	} catch (err) {
+		console.error('Error fetching data:', err)
+		res.status(500).json({ error: 'Error fetching data' })
+	}
+})
+
+async function createServer() {
 	/** @type {import('vite').ViteDevServer | undefined} */
 	let vite
 	if (!isProduction) {
@@ -66,7 +89,7 @@ async function createServer() {
 				render = (await vite.ssrLoadModule('/src/entry-server.jsx')).render
 			} else {
 				template = templateHtml
-				render = (await import('./dist/server/entry-server.jsx')).render
+				render = (await import('./dist/server/entry-server.js')).render
 			}
 
 			// 4. render the app HTML. This assumes entry-server.js's exported

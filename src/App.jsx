@@ -5,9 +5,9 @@ import Sidebar from './Sidebar'
 import GoogleMap from './Map'
 import './App.css'
 import { Box, CssBaseline, Toolbar } from '@mui/material'
+import Swal from 'sweetalert2'
 
-const MAPS_API_KEY = import.meta.env.GOOGLE_MAPS_API_KEY
-const FOURSQUARE_API_KEY = import.meta.env.FOURSQUARE_API_KEY
+const MAPS_API_KEY = import.meta.env.GOOGLE_MAPS_DEMO_KEY
 
 function App() {
 	const [locations, setLocations] = useState(null)
@@ -22,12 +22,31 @@ function App() {
 		if (setDataComplete === true) setDataComplete(false)
 		if (resultsError !== '') setResultsError('')
 
-		const places = await getFsqPlaces({
-			setResultsError,
-			setLocations,
-			setResults,
-			setDataComplete,
-		})
+		fetch(`/api/places?near=${near}`)
+			.then((res) => {
+				if (res.status === 200) return res.json()
+			})
+			.then((res) => {
+				if (res === undefined) {
+					setResultsError(
+						'Please enter a valid location. (ie Chicago,IL or London)',
+					)
+					return
+				}
+
+				setLocations(res.results)
+				setResults(res.results)
+				setDataComplete(true)
+			})
+			.catch((err) => {
+				console.log(err)
+				Swal.fire({
+					title: 'ERROR!',
+					text: 'Unable to Retrieve Data.',
+					icon: 'error',
+					showCloseButton: true,
+				})
+			})
 	}
 
 	const userInput = (near) => {
