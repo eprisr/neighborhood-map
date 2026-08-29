@@ -8,7 +8,7 @@ interface ProviderProps {
 }
 
 function MapsProvider({ results, center, result }: ProviderProps) {
-	const MAPS_API_KEY = process.env.GOOGLE_MAPS_DEMO_KEY || ''
+	const MAPS_API_KEY = import.meta.env.GOOGLE_MAPS_DEMO_KEY || ''
 
 	return (
 		<APIProvider
