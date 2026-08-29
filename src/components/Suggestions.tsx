@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 import { Grid, List, ListItem, ListItemButton } from '@mui/material'
 
-function Suggestions({ results, getResult }) {
-	const [selectedIndex, setSelectedIndex] = useState(null)
+interface SuggesttionsProps {
+	results: any[]
+	getResult: (r: any) => void
+}
 
-	const clickResult = (e, i) => {
+function Suggestions({ results, getResult }: SuggesttionsProps) {
+	const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+
+	const clickResult = (e: MouseEvent, i: number) => {
 		setSelectedIndex(i)
 	}
 
