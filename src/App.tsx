@@ -109,12 +109,7 @@ function App() {
 						height: '100vh',
 					}}>
 					<Toolbar sx={{ display: { md: 'none' } }} />
-					<MapsProvider
-						userInputValue={userInputValue}
-						results={results}
-						center={center}
-						result={result}
-					/>
+					<MapsProvider results={results} center={center} result={result} />
 				</Box>
 			)}
 		</Box>
