@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import '../index.css'
 import Search from './Search'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -14,6 +14,14 @@ import {
 } from '@mui/material'
 import { Close, HelpOutlineOutlined as HelpOutline } from '@mui/icons-material'
 
+interface SidebarProps {
+	getQuery: (query: string) => void
+	getNear: (near: string) => void
+	results: any[]
+	resultsError: string
+	getResult: (r: string) => void
+}
+
 const drawerWidth = {
 	xs: '100%',
 	md: '30%',
@@ -24,9 +32,15 @@ const drawerHeight = {
 	md: '100%',
 }
 
-function Sidebar({ getQuery, getNear, results, resultsError, getResult }) {
-	const [mobileOpen, setMobileOpen] = useState(false)
-	const [isClosing, setIsClosing] = useState(false)
+function Sidebar({
+	getQuery,
+	getNear,
+	results,
+	resultsError,
+	getResult,
+}: SidebarProps) {
+	const [mobileOpen, setMobileOpen] = useState<boolean>(false)
+	const [isClosing, setIsClosing] = useState<boolean>(false)
 
 	const closeDrawer = () => {
 		setIsClosing(true)

@@ -10,7 +10,7 @@ import { Locations } from './types'
 function App() {
 	const [locations, setLocations] = useState<Locations[]>([])
 	const [results, setResults] = useState<any[]>([])
-	const [result, setResult] = useState({})
+	const [result, setResult] = useState<object>({})
 	const [userInputValue, setUserInputValue] = useState<{ near: string }>({
 		near: '',
 	})
