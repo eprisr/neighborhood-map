@@ -1,21 +1,32 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	AdvancedMarker,
+	AdvancedMarkerRef,
 	InfoWindow,
 	Map,
 	Pin,
 	useMap,
 } from '@vis.gl/react-google-maps'
 import * as markerclusterer from '@googlemaps/markerclusterer'
+import { Venue } from '../types'
 
+interface MapProps {
+	results: any[]
+	result: {
+		result: {
+			fsq_place_id: string
+		}
+	}
+	center: { lng: number; lat: number }
+}
 const { MarkerClusterer } = markerclusterer
 
 const MAP_ID = import.meta.env.MAP_ID
 
-function GoogleMap({ results, result, center }) {
+function GoogleMap({ results, result, center }: MapProps) {
 	const map = useMap()
-	const [markers, setMarkers] = useState({})
-	const [selectedResultKey, setSelectedResultKey] = useState(null)
+	const [markers, setMarkers] = useState<object>({})
+	const [selectedResultKey, setSelectedResultKey] = useState<string | null>('')
 
 	useEffect(() => {
 		closeInfoWindow()
@@ -24,7 +35,7 @@ function GoogleMap({ results, result, center }) {
 	}, [center])
 
 	useEffect(() => {
-		if (result.result) setSelectedResultKey(result.result.fsq_id)
+		if (result.result) setSelectedResultKey(result.result.fsq_place_id)
 	}, [result])
 
 	const clusterer = useMemo(() => {
@@ -39,19 +50,23 @@ function GoogleMap({ results, result, center }) {
 		clusterer.addMarkers(Object.values(markers))
 	}, [clusterer, markers])
 
-	const setMarkerRef = useCallback((marker, key) => {
-		setMarkers((markers) => {
-			if ((marker && markers[key]) || (!marker && !markers[key])) return markers
+	const setMarkerRef = useCallback(
+		(marker: AdvancedMarkerRef, key: Venue[fsq_place_id]) => {
+			setMarkers((markers) => {
+				if ((marker && markers[key]) || (!marker && !markers[key]))
+					return markers
 
-			if (marker) {
-				return { ...markers, [key]: marker }
-			} else {
-				const { [key]: _, ...newMarkers } = markers
+				if (marker) {
+					return { ...markers, [key]: marker }
+				} else {
+					const { [key]: _, ...newMarkers } = markers
 
-				return newMarkers
-			}
-		})
-	}, [])
+					return newMarkers
+				}
+			})
+		},
+		[],
+	)
 
 	const selectedResult = useMemo(
 		() =>
@@ -65,12 +80,15 @@ function GoogleMap({ results, result, center }) {
 		setSelectedResultKey(null)
 	}, [])
 
-	const clickMarker = useCallback((venue, ev) => {
-		setSelectedResultKey(venue.fsq_id)
+	const clickMarker = useCallback(
+		(venue: Venue, ev: google.maps.marker.AdvancedMarkerClickEvent) => {
+			setSelectedResultKey(venue.fsq_place_id)
 
-		if (!map) return
-		map.panTo(ev.latLng)
-	}, [])
+			if (!map) return
+			map.panTo(ev.latLng)
+		},
+		[],
+	)
 
 	return (
 		<Map defaultZoom={10} defaultCenter={center} mapId={MAP_ID}>
@@ -98,16 +116,22 @@ function GoogleMap({ results, result, center }) {
 
 export default GoogleMap
 
-const MapMarker = ({ venue, onClick, setMarkerRef }) => {
+interface MapMarkerProps {
+	venue: Venue
+	onClick: (venue: any, ev: any) => void
+	setMarkerRef: (marker: any, key: any) => void
+}
+
+const MapMarker = ({ venue, onClick, setMarkerRef }: MapMarkerProps) => {
 	const handleMarkerClick = useCallback(
-		(ev) => onClick(venue, ev),
+		(ev: google.maps.marker.AdvancedMarkerClickEvent) => onClick(venue, ev),
 		[onClick, venue],
 	)
 	const ref = useCallback(
-		(marker) => {
-			setMarkerRef(marker, venue.fsq_id)
+		(marker: AdvancedMarkerRef) => {
+			setMarkerRef(marker, venue.fsq_place_id)
 		},
-		[setMarkerRef, venue.fsq_id],
+		[setMarkerRef, venue.fsq_place_id],
 	)
 
 	return (
