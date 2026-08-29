@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
 	AdvancedMarker,
-	APIProvider,
 	InfoWindow,
 	Map,
 	Pin,
@@ -12,7 +11,6 @@ import * as markerclusterer from '@googlemaps/markerclusterer'
 const { MarkerClusterer } = markerclusterer
 
 const MAP_ID = import.meta.env.MAP_ID
-const MAPS_API_KEY = import.meta.env.GOOGLE_MAPS_DEMO_KEY
 
 function GoogleMap({ results, result, center }) {
 	const map = useMap()
@@ -75,30 +73,26 @@ function GoogleMap({ results, result, center }) {
 	}, [])
 
 	return (
-		<APIProvider
-			apiKey={MAPS_API_KEY}
-			onLoad={() => console.log('Maps API has loaded.')}>
-			<Map defaultZoom={10} defaultCenter={center} mapId={MAP_ID}>
-				{results &&
-					results.map((venue) => (
-						<MapMarker
-							key={venue.fsq_id}
-							venue={venue}
-							onClick={clickMarker}
-							setMarkerRef={setMarkerRef}
-						/>
-					))}
+		<Map defaultZoom={10} defaultCenter={center} mapId={MAP_ID}>
+			{results &&
+				results.map((venue) => (
+					<MapMarker
+						key={venue.fsq_id}
+						venue={venue}
+						onClick={clickMarker}
+						setMarkerRef={setMarkerRef}
+					/>
+				))}
 
-				{selectedResultKey && (
-					<InfoWindow
-						anchor={markers[selectedResultKey]}
-						onCloseClick={closeInfoWindow}>
-						<h2>INFOWINDOW</h2>
-						{selectedResult?.name}
-					</InfoWindow>
-				)}
-			</Map>
-		</APIProvider>
+			{selectedResultKey && (
+				<InfoWindow
+					anchor={markers[selectedResultKey]}
+					onCloseClick={closeInfoWindow}>
+					<h2>INFOWINDOW</h2>
+					{selectedResult?.name}
+				</InfoWindow>
+			)}
+		</Map>
 	)
 }
 

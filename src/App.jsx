@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
-import { APIProvider } from '@vis.gl/react-google-maps'
 import escapeRegExp from 'escape-string-regexp'
-import Sidebar from './Sidebar'
-import GoogleMap from './Map'
+import Sidebar from './components/Sidebar'
+import GoogleMap from './components/Map'
 import './App.css'
 import { Box, CssBaseline, Toolbar } from '@mui/material'
 import Swal from 'sweetalert2'
-
-const MAPS_API_KEY = import.meta.env.GOOGLE_MAPS_DEMO_KEY
+import MapsProvider from './MapsProvider'
 
 function App() {
 	const [locations, setLocations] = useState(null)
@@ -96,25 +94,21 @@ function App() {
 				getResult={getResult}
 			/>
 			{dataComplete && (
-				<APIProvider
-					apiKey={MAPS_API_KEY}
-					onLoad={() => console.log('Maps API has loaded.')}>
-					<Box
-						component="main"
-						sx={{
-							flexGrow: 1,
-							width: { md: `calc(100vw - 240px)` },
-							height: '100vh',
-						}}>
-						<Toolbar sx={{ display: { md: 'none' } }} />
-						<GoogleMap
-							userInput={userInputValue}
-							results={results}
-							center={center}
-							result={result}
-						/>
-					</Box>
-				</APIProvider>
+				<Box
+					component="main"
+					sx={{
+						flexGrow: 1,
+						width: { md: `calc(100vw - 240px)` },
+						height: '100vh',
+					}}>
+					<Toolbar sx={{ display: { md: 'none' } }} />
+					<MapsProvider
+						userInputValue={userInputValue}
+						results={results}
+						center={center}
+						result={result}
+					/>
+				</Box>
 			)}
 		</Box>
 	)
