@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import escapeRegExp from 'escape-string-regexp'
 import Sidebar from './components/Sidebar'
 import './App.css'
 import { Box, CssBaseline, Toolbar } from '@mui/material'
@@ -58,18 +57,6 @@ function App() {
 		getData(near)
 	}
 
-	const getQuery = (query: string) => {
-		if (query !== '' && query !== undefined) {
-			const venue = new RegExp(escapeRegExp(query), 'i')
-			const filteredLocations = locations.filter((location) =>
-				venue.test(location.name),
-			)
-			setResults(filteredLocations)
-		} else {
-			setResults(locations)
-		}
-	}
-
 	const getNear = (near: string) => {
 		userInput(near)
 	}
@@ -92,12 +79,11 @@ function App() {
 	}, [locations])
 
 	return (
-		<SearchContext value={{}}>
+		<SearchContext value={{ locations }}>
 			<Box sx={{ display: 'flex' }}>
 				<CssBaseline />
 				<Sidebar
 					getNear={getNear}
-					results={results}
 					resultsError={resultsError}
 					getResult={getResult}
 				/>

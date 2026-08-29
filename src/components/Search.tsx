@@ -1,28 +1,31 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import escapeRegExp from 'escape-string-regexp'
+import { Box, TextField } from '@mui/material'
 import useDebounce from '../utils/useDebounce'
 import Suggestions from './Suggestions'
-import { Box, TextField } from '@mui/material'
-
+import SearchContext from '../SearchContext'
 interface SearchProps {
-	getQuery: (query: string) => void
 	getNear: (near: string) => void
-	results: any[]
 	resultsError: string
 	getResult: (r: string) => void
 }
 
-function Search({
-	getQuery,
-	getNear,
-	results,
-	resultsError,
-	getResult,
-}: SearchProps) {
+function Search({ getNear, resultsError, getResult }: SearchProps) {
+	const { locations } = useContext(SearchContext)
+	const [results, setResults] = useState<any[]>([])
 	const [query, setQuery] = useState<string>('')
 	const [city, setCity] = useState<string>('')
 
 	const updateQuery = () => {
-		getQuery(query)
+		if (query !== '' && query !== undefined) {
+			const venue = new RegExp(escapeRegExp(query), 'i')
+			const filteredLocations = locations.filter((location) =>
+				venue.test(location.name),
+			)
+			setResults(filteredLocations)
+		} else {
+			setResults(locations)
+		}
 	}
 
 	const updateNear = () => {

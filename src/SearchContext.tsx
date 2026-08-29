@@ -1,5 +1,10 @@
 import { createContext } from 'react'
+import { Locations } from './types'
 
-const SearchContext = createContext({})
+interface SearchResults {
+	locations: Locations[]
+}
+
+const SearchContext = createContext<SearchResults>({ locations: [] })
 
 export default SearchContext
