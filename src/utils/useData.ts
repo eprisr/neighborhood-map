@@ -8,8 +8,6 @@ export function useData(url: string) {
 	const [dataComplete, setDataComplete] = useState<boolean>(false)
 	const [resultsError, setResultsError] = useState<string>('')
 
-	const [data, setData] = useState(null)
-
 	useEffect(() => {
 		let ignore = false
 		if (dataComplete === true) setDataComplete(false)
@@ -30,7 +28,6 @@ export function useData(url: string) {
 				if (!ignore) {
 					setLocations(res.results)
 					setResults(res.results)
-					setData(res.results)
 					setDataComplete(true)
 				}
 			})
@@ -49,5 +46,5 @@ export function useData(url: string) {
 		}
 	}, [url])
 
-	return { data, locations, results, dataComplete, resultsError }
+	return { locations, results, dataComplete, resultsError }
 }

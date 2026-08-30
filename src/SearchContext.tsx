@@ -35,7 +35,7 @@ interface ProviderProps {
 }
 
 function SearchProvider({ children }: ProviderProps) {
-	const { data, locations, results, dataComplete, resultsError } = useData(
+	const { locations, results, dataComplete, resultsError } = useData(
 		'/api/places?near="Chicago,IL"',
 	)
 
