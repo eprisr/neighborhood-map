@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
 import { Locations } from '../types'
+import { SearchContext } from '../SearchContext'
 
 export function useData(url: string) {
 	const [locations, setLocations] = useState<Locations[]>([])

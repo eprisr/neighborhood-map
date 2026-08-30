@@ -19,6 +19,8 @@ interface SearchResults {
 	setResult: Dispatch<SetStateAction<object>>
 	dataComplete: boolean
 	resultsError: string
+	userInputValue: string
+	setUserInputValue: Dispatch<SetStateAction<string>>
 }
 
 const SearchContext = createContext<SearchResults>({
@@ -28,6 +30,8 @@ const SearchContext = createContext<SearchResults>({
 	setResult: useState,
 	dataComplete: false,
 	resultsError: '',
+	userInputValue: '',
+	setUserInputValue: useState,
 })
 
 interface ProviderProps {
@@ -35,8 +39,10 @@ interface ProviderProps {
 }
 
 function SearchProvider({ children }: ProviderProps) {
+	const [userInputValue, setUserInputValue] = useState<string>('Chicago, IL')
+
 	const { locations, results, dataComplete, resultsError } = useData(
-		'/api/places?near="Chicago,IL"',
+		`/api/places?near=${userInputValue}`,
 	)
 
 	const [result, setResult] = useState<object>({})
@@ -50,6 +56,8 @@ function SearchProvider({ children }: ProviderProps) {
 				setResult: setResult,
 				dataComplete: dataComplete,
 				resultsError: resultsError,
+				userInputValue: userInputValue,
+				setUserInputValue: setUserInputValue,
 			}}>
 			{children}
 		</SearchContext>
