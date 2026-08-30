@@ -21,7 +21,7 @@ interface MapProps {
 }
 const { MarkerClusterer } = markerclusterer
 
-const MAP_ID = import.meta.env.MAP_ID
+const MAP_ID = import.meta.env.VITE_MAP_ID_DEMO
 
 function GoogleMap({ results, result, center }: MapProps) {
 	const map = useMap()
