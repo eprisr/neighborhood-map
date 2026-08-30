@@ -5,11 +5,8 @@ import useDebounce from '../utils/useDebounce'
 import Suggestions from './Suggestions'
 import { SearchContext } from '../SearchContext'
 import { useData } from '../utils/useData'
-interface SearchProps {
-	getResult: (r: string) => void
-}
 
-function Search({ getResult }: SearchProps) {
+function Search() {
 	const { locations, resultsError } = useContext(SearchContext)
 	const [results, setResults] = useState<any[]>([])
 	const [query, setQuery] = useState<string>('')
@@ -76,7 +73,7 @@ function Search({ getResult }: SearchProps) {
 					fullWidth
 				/>
 			</Box>
-			<Suggestions results={results} getResult={getResult} />
+			<Suggestions results={results} />
 		</div>
 	)
 }

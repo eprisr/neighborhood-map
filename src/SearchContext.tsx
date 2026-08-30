@@ -11,6 +11,8 @@ import { useData } from './utils/useData'
 interface SearchResults {
 	locations: Locations[]
 	results: any[]
+	result: {}
+	setResult: Dispatch<SetStateAction<object>>
 	dataComplete: boolean
 	resultsError: string
 }
@@ -18,6 +20,8 @@ interface SearchResults {
 const SearchContext = createContext<SearchResults>({
 	locations: [],
 	results: [],
+	result: {},
+	setResult: useState,
 	dataComplete: false,
 	resultsError: '',
 })
@@ -31,11 +35,15 @@ function SearchProvider({ children }: ProviderProps) {
 		'/api/places?near="Chicago,IL"',
 	)
 
+	const [result, setResult] = useState<object>({})
+
 	return (
 		<SearchContext
 			value={{
 				locations: locations,
 				results: results,
+				result: result,
+				setResult: setResult,
 				dataComplete: dataComplete,
 				resultsError: resultsError,
 			}}>

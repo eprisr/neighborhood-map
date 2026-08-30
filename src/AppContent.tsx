@@ -3,21 +3,15 @@ import Sidebar from './components/Sidebar'
 import './App.css'
 import { Box, CssBaseline, Toolbar } from '@mui/material'
 import MapsProvider from './MapsProvider'
-import { SearchContext, SearchProvider } from './SearchContext'
+import { SearchContext } from './SearchContext'
 
 function AppContent() {
 	const { locations, results, dataComplete } = useContext(SearchContext)
 
-	const [result, setResult] = useState<object>({})
 	const [center, setCenter] = useState<{ lat: number; lng: number }>({
 		lat: 41.85003,
 		lng: -87.65005,
 	})
-
-	const getResult = (r: string) => {
-		const index = results.indexOf(r)
-		setResult({ result: r, index })
-	}
 
 	useEffect(() => {
 		if (locations !== null && locations[0] !== undefined) {
@@ -30,7 +24,7 @@ function AppContent() {
 	return (
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
-			<Sidebar getResult={getResult} />
+			<Sidebar />
 			{dataComplete && (
 				<Box
 					component="main"

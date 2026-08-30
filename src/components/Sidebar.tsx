@@ -14,10 +14,6 @@ import {
 } from '@mui/material'
 import { Close, HelpOutlineOutlined as HelpOutline } from '@mui/icons-material'
 
-interface SidebarProps {
-	getResult: (r: string) => void
-}
-
 const drawerWidth = {
 	xs: '100%',
 	md: '30%',
@@ -28,7 +24,7 @@ const drawerHeight = {
 	md: '100%',
 }
 
-function Sidebar({ getResult }: SidebarProps) {
+function Sidebar() {
 	const [mobileOpen, setMobileOpen] = useState<boolean>(false)
 	const [isClosing, setIsClosing] = useState<boolean>(false)
 
@@ -70,7 +66,7 @@ function Sidebar({ getResult }: SidebarProps) {
 					</IconButton>
 				</Stack>
 			</Toolbar>
-			<Search getResult={getResult} />
+			<Search />
 		</div>
 	)
 
