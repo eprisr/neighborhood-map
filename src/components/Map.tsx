@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import {
 	AdvancedMarker,
 	AdvancedMarkerRef,
@@ -9,22 +9,18 @@ import {
 } from '@vis.gl/react-google-maps'
 import * as markerclusterer from '@googlemaps/markerclusterer'
 import { Venue } from '../types'
+import { SearchContext } from '../SearchContext'
 
 interface MapProps {
-	results: any[]
-	result: {
-		result: {
-			fsq_place_id: string
-		}
-	}
 	center: { lng: number; lat: number }
 }
 const { MarkerClusterer } = markerclusterer
 
 const MAP_ID = import.meta.env.VITE_MAP_ID_DEMO
 
-function GoogleMap({ results, result, center }: MapProps) {
+function GoogleMap({ center }: MapProps) {
 	const map = useMap()
+	const { results, result } = useContext(SearchContext)
 	const [markers, setMarkers] = useState<object>({})
 	const [selectedResultKey, setSelectedResultKey] = useState<string | null>('')
 

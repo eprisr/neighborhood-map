@@ -11,7 +11,11 @@ import { useData } from './utils/useData'
 interface SearchResults {
 	locations: Locations[]
 	results: any[]
-	result: {}
+	result: {
+		result?: {
+			fsq_place_id: string
+		}
+	}
 	setResult: Dispatch<SetStateAction<object>>
 	dataComplete: boolean
 	resultsError: string

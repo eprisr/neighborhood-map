@@ -6,7 +6,7 @@ import MapsProvider from './MapsProvider'
 import { SearchContext } from './SearchContext'
 
 function AppContent() {
-	const { locations, results, dataComplete } = useContext(SearchContext)
+	const { locations, dataComplete } = useContext(SearchContext)
 
 	const [center, setCenter] = useState<{ lat: number; lng: number }>({
 		lat: 41.85003,
@@ -34,7 +34,7 @@ function AppContent() {
 						height: '100vh',
 					}}>
 					<Toolbar sx={{ display: { md: 'none' } }} />
-					<MapsProvider results={results} center={center} result={result} />
+					<MapsProvider center={center} />
 				</Box>
 			)}
 		</Box>
