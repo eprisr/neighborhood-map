@@ -1,65 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import Sidebar from './components/Sidebar'
 import './App.css'
 import { Box, CssBaseline, Toolbar } from '@mui/material'
-import Swal from 'sweetalert2'
 import MapsProvider from './MapsProvider'
-import { Locations } from './types'
-import SearchContext from './SearchContext'
+import { useData } from './utils/useData'
+import { SearchContext, SearchProvider } from './SearchContext'
 
 function App() {
-	const [locations, setLocations] = useState<Locations[]>([])
-	const [results, setResults] = useState<any[]>([])
+	const { locations, results, dataComplete } = useContext(SearchContext)
+
 	const [result, setResult] = useState<object>({})
-	const [userInputValue, setUserInputValue] = useState<{ near: string }>({
-		near: '',
-	})
-	const [resultsError, setResultsError] = useState<string>('')
 	const [center, setCenter] = useState<{ lat: number; lng: number }>({
 		lat: 41.85003,
 		lng: -87.65005,
 	})
-	const [dataComplete, setDataComplete] = useState<boolean>(false)
-
-	async function getData(near: string) {
-		if (dataComplete === true) setDataComplete(false)
-		if (resultsError !== '') setResultsError('')
-
-		fetch(`/api/places?near=${near}`)
-			.then((res) => {
-				if (res.status === 200) return res.json()
-			})
-			.then((res) => {
-				if (res === undefined) {
-					setResultsError(
-						'Please enter a valid location. (ie Chicago,IL or London)',
-					)
-					return
-				}
-
-				setLocations(res.results)
-				setResults(res.results)
-				setDataComplete(true)
-			})
-			.catch((err) => {
-				console.log(err)
-				Swal.fire({
-					title: 'ERROR!',
-					text: 'Unable to Retrieve Data.',
-					icon: 'error',
-					showCloseButton: true,
-				})
-			})
-	}
-
-	const userInput = (near: string) => {
-		setUserInputValue({ near })
-		getData(near)
-	}
-
-	const getNear = (near: string) => {
-		userInput(near)
-	}
 
 	const getResult = (r: string) => {
 		const index = results.indexOf(r)
@@ -67,7 +21,7 @@ function App() {
 	}
 
 	useEffect(() => {
-		getData('Chicago, IL')
+		useData('Chicago, IL')
 	}, [])
 
 	useEffect(() => {
@@ -79,14 +33,10 @@ function App() {
 	}, [locations])
 
 	return (
-		<SearchContext value={{ locations }}>
+		<SearchProvider>
 			<Box sx={{ display: 'flex' }}>
 				<CssBaseline />
-				<Sidebar
-					getNear={getNear}
-					resultsError={resultsError}
-					getResult={getResult}
-				/>
+				<Sidebar getResult={getResult} />
 				{dataComplete && (
 					<Box
 						component="main"
@@ -100,7 +50,7 @@ function App() {
 					</Box>
 				)}
 			</Box>
-		</SearchContext>
+		</SearchProvider>
 	)
 }
 

@@ -3,18 +3,25 @@ import escapeRegExp from 'escape-string-regexp'
 import { Box, TextField } from '@mui/material'
 import useDebounce from '../utils/useDebounce'
 import Suggestions from './Suggestions'
-import SearchContext from '../SearchContext'
+import { SearchContext } from '../SearchContext'
+import { useData } from '../utils/useData'
 interface SearchProps {
-	getNear: (near: string) => void
-	resultsError: string
 	getResult: (r: string) => void
 }
 
-function Search({ getNear, resultsError, getResult }: SearchProps) {
-	const { locations } = useContext(SearchContext)
+function Search({ getResult }: SearchProps) {
+	const { locations, resultsError } = useContext(SearchContext)
 	const [results, setResults] = useState<any[]>([])
 	const [query, setQuery] = useState<string>('')
 	const [city, setCity] = useState<string>('')
+	const [userInputValue, setUserInputValue] = useState<{ near: string }>({
+		near: '',
+	})
+
+	const userInput = (near: string) => {
+		setUserInputValue({ near })
+		useData(near)
+	}
 
 	const updateQuery = () => {
 		if (query !== '' && query !== undefined) {
@@ -29,7 +36,7 @@ function Search({ getNear, resultsError, getResult }: SearchProps) {
 	}
 
 	const updateNear = () => {
-		getNear(city)
+		userInput(city)
 	}
 
 	const debouncedQuery = useDebounce(updateQuery)
