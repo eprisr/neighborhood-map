@@ -7,7 +7,7 @@ import { SearchContext } from '../SearchContext'
 import { useData } from '../utils/useData'
 
 function Search() {
-	const { locations, results, resultsError } = useContext(SearchContext)
+	const { locations, resultsError } = useContext(SearchContext)
 	const [query, setQuery] = useState<string>('')
 	const [city, setCity] = useState<string>('')
 	const [userInputValue, setUserInputValue] = useState<{ near: string }>({
@@ -73,7 +73,7 @@ function Search() {
 					fullWidth
 				/>
 			</Box>
-			<Suggestions results={results} />
+			<Suggestions />
 		</div>
 	)
 }

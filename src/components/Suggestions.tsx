@@ -2,12 +2,8 @@ import { MouseEvent, useContext, useState } from 'react'
 import { Grid, List, ListItem, ListItemButton } from '@mui/material'
 import { SearchContext } from '../SearchContext'
 
-interface SuggesttionsProps {
-	results: any[]
-}
-
-function Suggestions({ results }: SuggesttionsProps) {
-	const { setResult } = useContext(SearchContext)
+function Suggestions() {
+	const { results, setResult } = useContext(SearchContext)
 	const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 
 	const clickResult = (e: MouseEvent, i: number) => {
