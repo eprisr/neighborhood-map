@@ -7,8 +7,7 @@ import { SearchContext } from '../SearchContext'
 import { useData } from '../utils/useData'
 
 function Search() {
-	const { locations, resultsError } = useContext(SearchContext)
-	const [results, setResults] = useState<any[]>([])
+	const { locations, results, resultsError } = useContext(SearchContext)
 	const [query, setQuery] = useState<string>('')
 	const [city, setCity] = useState<string>('')
 	const [userInputValue, setUserInputValue] = useState<{ near: string }>({
@@ -17,8 +16,9 @@ function Search() {
 
 	const userInput = (near: string) => {
 		setUserInputValue({ near })
-		useData(near)
 	}
+
+	// useData(near)
 
 	const updateQuery = () => {
 		if (query !== '' && query !== undefined) {
@@ -26,9 +26,9 @@ function Search() {
 			const filteredLocations = locations.filter((location) =>
 				venue.test(location.name),
 			)
-			setResults(filteredLocations)
+			// setResults(filteredLocations)
 		} else {
-			setResults(locations)
+			// setResults(locations)
 		}
 	}
 
