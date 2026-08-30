@@ -22,9 +22,10 @@ fsqDevelopersPlaces.auth(process.env.FOURSQUARE_API_KEY)
 
 app.get('/api/places', async (req, res) => {
 	const near = req.query.near
+	const query = req.query.query
 	try {
 		const { data, status } = await fsqDevelopersPlaces.placeSearch({
-			query: 'smoothie',
+			query,
 			near,
 			sort: 'DISTANCE',
 			limit: 50,

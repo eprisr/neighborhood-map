@@ -1,33 +1,20 @@
 import { useContext, useState } from 'react'
-import escapeRegExp from 'escape-string-regexp'
 import { Box, TextField } from '@mui/material'
 import useDebounce from '../utils/useDebounce'
 import Suggestions from './Suggestions'
 import { SearchContext } from '../SearchContext'
-import { useData } from '../utils/useData'
 
 function Search() {
-	const { locations, resultsError, setUserInputValue } =
-		useContext(SearchContext)
-	const [query, setQuery] = useState<string>('')
+	const { resultsError, setUserCity, setUserQuery } = useContext(SearchContext)
+	const [query, setQuery] = useState<string>('smoothie')
 	const [city, setCity] = useState<string>('')
 
-	const userInput = (near: string) => {
-		setUserInputValue(near)
-	}
-
 	const updateQuery = () => {
-		if (query !== '' && query !== undefined) {
-			const venue = new RegExp(escapeRegExp(query), 'i')
-			const filteredLocations = locations.filter((location) =>
-				venue.test(location.name),
-			)
-		} else {
-		}
+		setUserQuery(query)
 	}
 
 	const updateNear = () => {
-		userInput(city)
+		setUserCity(city)
 	}
 
 	const debouncedQuery = useDebounce(updateQuery)

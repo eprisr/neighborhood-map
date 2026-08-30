@@ -1,24 +1,37 @@
 import { MouseEvent, useContext, useState } from 'react'
 import { Grid, List, ListItem, ListItemButton } from '@mui/material'
 import { SearchContext } from '../SearchContext'
+import escapeStringRegexp from 'escape-string-regexp'
 
 function Suggestions() {
-	const { results, setResult } = useContext(SearchContext)
+	const { results, setResult, userQuery } = useContext(SearchContext)
 	const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+
+	const filteredResults = () => {
+		if (userQuery !== '' && userQuery !== undefined) {
+			const venue = new RegExp(escapeStringRegexp(userQuery), 'i')
+			const filteredLocations = results.filter((result) =>
+				venue.test(result.name),
+			)
+			return filteredLocations
+		} else {
+			return results
+		}
+	}
 
 	const clickResult = (e: MouseEvent, i: number) => {
 		setSelectedIndex(i)
 	}
 
 	const getResult = (r: string) => {
-		const index = results.indexOf(r)
+		const index = filteredResults().indexOf(r)
 		setResult({ result: r, index })
 	}
 
 	return (
 		<List>
-			{results &&
-				results.map((r) => (
+			{filteredResults() &&
+				filteredResults().map((r) => (
 					<ListItem key={r.fsq_place_id}>
 						<ListItemButton
 							selected={selectedIndex === r.fsq_place_id}
