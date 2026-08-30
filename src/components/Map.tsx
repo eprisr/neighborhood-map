@@ -95,7 +95,7 @@ function GoogleMap({ results, result, center }: MapProps) {
 			{results &&
 				results.map((venue) => (
 					<MapMarker
-						key={venue.fsq_id}
+						key={venue.fsq_place_id}
 						venue={venue}
 						onClick={clickMarker}
 						setMarkerRef={setMarkerRef}
@@ -138,8 +138,8 @@ const MapMarker = ({ venue, onClick, setMarkerRef }: MapMarkerProps) => {
 		<AdvancedMarker
 			ref={ref}
 			position={{
-				lat: venue.geocodes.main.latitude,
-				lng: venue.geocodes.main.longitude,
+				lat: venue.latitude,
+				lng: venue.longitude,
 			}}
 			onClick={handleMarkerClick}>
 			<Pin />

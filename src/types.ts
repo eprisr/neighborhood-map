@@ -6,5 +6,6 @@ export type Locations = {
 
 export type Venue = {
 	fsq_place_id: string
-	geocodes: { main: { latitude: number; longitude: number } }
+	latitude: number
+	longitude: number
 }
