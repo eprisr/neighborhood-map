@@ -24,8 +24,8 @@
 		"start": "vite",
 		"dev": "node server",
 		"build": "npm run build:client && npm run build:server",
-		"build:client": "vite build --outDir dist/client",
-		"build:server": "vite build --outDir dist/server --ssr src/entry-server.jsx",
+		"build:client": "vite build --outDir build/client",
+		"build:server": "vite build --outDir build/server --ssr src/entry-server.jsx",
 		"serve": "vite preview",
 		"test": "react-scripts test"
 	},
