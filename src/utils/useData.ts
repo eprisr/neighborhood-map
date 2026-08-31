@@ -10,22 +10,26 @@ export function useData(url: string) {
 
 	useEffect(() => {
 		let ignore = false
+		let status: number
 		if (dataComplete === true) setDataComplete(false)
 		if (resultsError !== '') setResultsError('')
 
 		fetch(url)
 			.then((res) => {
+				status = res.status
 				if (res.status === 200) return res.json()
 			})
 			.then((res) => {
-				if (res === undefined) {
-					setResultsError(
-						'Please enter a valid location. (ie Chicago,IL or London)',
-					)
-					return
-				}
-
 				if (!ignore) {
+					if (res === undefined) {
+						setResultsError(
+							status >= 500
+								? 'Something went wrong on our end. Please try again shortly.'
+								: 'Please enter a valid location. (ie Chicago,IL or London)',
+						)
+						return
+					}
+
 					setLocations(res.results)
 					setResults(res.results)
 					setDataComplete(true)
