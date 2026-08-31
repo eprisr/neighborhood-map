@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import fsPromises from 'node:fs/promises'
 import path from 'node:path'
 import express from 'express'
 import { createServer as createViteServer } from 'vite'
@@ -13,7 +14,7 @@ if (!isProduction) process.loadEnvFile('.env.local')
 
 // Cached production assets
 const templateHtml = isProduction
-	? await fs.readFile('./dist/client/index.html', 'utf-8')
+	? await fsPromises.readFile('./dist/client/index.html', 'utf-8')
 	: ''
 
 const app = express()
@@ -108,7 +109,7 @@ async function createServer() {
 		} catch (e) {
 			// If an error is caught, let Vite fix the stack trace so it maps back
 			// to your actual source code.
-			vite.ssrFixStacktrace(e)
+			vite?.ssrFixStacktrace(e)
 			console.log('Stack: ', e.stack)
 			res.status(500).end(e.stack)
 		}
