@@ -21,7 +21,9 @@ const MAP_ID = import.meta.env.VITE_MAP_ID_DEMO
 function GoogleMap({ center }: MapProps) {
 	const map = useMap()
 	const { results, result, setResult } = useContext(SearchContext)
-	const [markers, setMarkers] = useState<object>({})
+	const [markers, setMarkers] = useState<
+		Record<string, google.maps.marker.AdvancedMarkerElement>
+	>({})
 	const [selectedResultKey, setSelectedResultKey] = useState<string | null>('')
 
 	useEffect(() => {
@@ -47,7 +49,7 @@ function GoogleMap({ center }: MapProps) {
 	}, [clusterer, markers])
 
 	const setMarkerRef = useCallback(
-		(marker: AdvancedMarkerRef, key: Venue[fsq_place_id]) => {
+		(marker: AdvancedMarkerRef, key: Venue['fsq_place_id']) => {
 			setMarkers((markers) => {
 				if ((marker && markers[key]) || (!marker && !markers[key]))
 					return markers
@@ -77,12 +79,12 @@ function GoogleMap({ center }: MapProps) {
 	}, [])
 
 	const clickMarker = useCallback(
-		(venue: Venue, ev: google.maps.marker.AdvancedMarkerClickEvent) => {
+		(venue: Venue) => {
 			setSelectedResultKey(venue.fsq_place_id)
 			setResult({ result: venue })
 
 			if (!map) return
-			map.panTo(ev.latLng)
+			map.panTo({ lat: venue.latitude, lng: venue.longitude })
 		},
 		[],
 	)
