@@ -14,7 +14,7 @@ function AppContent() {
 	})
 
 	useEffect(() => {
-		if (locations !== null && locations[0] !== undefined) {
+		if (locations[0] !== undefined) {
 			const lat = locations[0].latitude
 			const lng = locations[0].longitude
 			setCenter({ lat, lng })
