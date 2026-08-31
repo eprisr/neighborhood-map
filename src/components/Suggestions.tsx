@@ -4,9 +4,9 @@ import { SearchContext } from '../SearchContext'
 import escapeStringRegexp from 'escape-string-regexp'
 
 function Suggestions() {
-	const { results, setResult, userQuery } = useContext(SearchContext)
+	const { results, result, setResult, userQuery } = useContext(SearchContext)
 	const [filteredResults, setFilteredResults] = useState<any[]>([])
-	const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+	const [selectedIndex, setSelectedIndex] = useState<string | null>(null)
 
 	const filterResults = () => {
 		if (userQuery !== '' && userQuery !== undefined) {
@@ -20,18 +20,21 @@ function Suggestions() {
 		}
 	}
 
-	const clickResult = (e: MouseEvent, i: number) => {
-		setSelectedIndex(i)
+	const clickResult = (e: MouseEvent, id: string) => {
+		setSelectedIndex(id)
 	}
 
 	const getResult = (r: string) => {
-		const index = filteredResults.indexOf(r)
-		setResult({ result: r, index })
+		setResult({ result: r })
 	}
 
 	useEffect(() => {
 		setFilteredResults(filterResults())
 	}, [userQuery, results])
+
+	useEffect(() => {
+		setSelectedIndex(result?.result?.fsq_place_id || null)
+	}, [result])
 
 	return (
 		<List>

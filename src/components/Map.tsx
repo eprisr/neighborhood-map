@@ -20,7 +20,7 @@ const MAP_ID = import.meta.env.VITE_MAP_ID_DEMO
 
 function GoogleMap({ center }: MapProps) {
 	const map = useMap()
-	const { results, result } = useContext(SearchContext)
+	const { results, result, setResult } = useContext(SearchContext)
 	const [markers, setMarkers] = useState<object>({})
 	const [selectedResultKey, setSelectedResultKey] = useState<string | null>('')
 
@@ -67,7 +67,7 @@ function GoogleMap({ center }: MapProps) {
 	const selectedResult = useMemo(
 		() =>
 			results && selectedResultKey
-				? results.find((r) => r.fsq_id === selectedResultKey)
+				? results.find((r) => r.fsq_place_id === selectedResultKey)
 				: null,
 		[results, selectedResultKey],
 	)
@@ -79,6 +79,7 @@ function GoogleMap({ center }: MapProps) {
 	const clickMarker = useCallback(
 		(venue: Venue, ev: google.maps.marker.AdvancedMarkerClickEvent) => {
 			setSelectedResultKey(venue.fsq_place_id)
+			setResult({ result: venue })
 
 			if (!map) return
 			map.panTo(ev.latLng)
