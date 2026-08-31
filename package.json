@@ -17,7 +17,7 @@
 	},
 	"scripts": {
 		"start": "vite",
-		"dev": "vercel dev",
+		"dev": "vite",
 		"build": "vite build",
 		"serve": "vite preview",
 		"test": "react-scripts test"
