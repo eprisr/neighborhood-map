@@ -29,13 +29,13 @@ const SearchContext = createContext<SearchResults>({
 	locations: [],
 	results: [],
 	result: {},
-	setResult: useState,
+	setResult: () => {},
 	dataComplete: false,
 	resultsError: '',
 	userCity: 'Chicago, IL',
-	setUserCity: useState,
+	setUserCity: () => {},
 	userQuery: 'smoothie',
-	setUserQuery: useState,
+	setUserQuery: () => {},
 })
 
 interface ProviderProps {
